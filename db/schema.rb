@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120121222559) do
+ActiveRecord::Schema.define(:version => 20120209053921) do
 
   create_table "annotation_categories", :force => true do |t|
     t.text     "annotation_category_name"
@@ -318,6 +318,7 @@ ActiveRecord::Schema.define(:version => 20120121222559) do
     t.string  "filename"
     t.string  "path",          :default => "/",   :null => false
     t.boolean "is_converted",  :default => false
+    t.string  "encoding"
   end
 
   add_index "submission_files", ["filename"], :name => "index_submission_files_on_filename"

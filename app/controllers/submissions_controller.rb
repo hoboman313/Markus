@@ -1,4 +1,5 @@
 require 'fastercsv'
+require 'rchardet'
 
 class SubmissionsController < ApplicationController
   include SubmissionsHelper

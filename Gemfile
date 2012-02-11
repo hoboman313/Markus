@@ -5,7 +5,7 @@
 # For production mode MySQL option :
 #   bundle install --without development test postgresql sqlite
 #
-# Make sure to decleare at least one 'source'
+# Make sure to declare at least one 'source'
 source 'http://rubygems.org'
 
 # Bundler requires these gems in all environments
@@ -20,6 +20,7 @@ gem "will_paginate"
 gem "fastercsv"
 gem "routing-filter"
 gem "dynamic_form"
+gem "rchardet"
 
 # To be removed
 gem "prototype_legacy_helper",
