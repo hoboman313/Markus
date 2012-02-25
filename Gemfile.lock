@@ -35,6 +35,8 @@ GEM
       activesupport (= 3.0.10)
     activesupport (3.0.10)
     arel (2.0.10)
+    assert_valid_markup (0.6.4)
+      json
     builder (2.1.2)
     cgi_multipart_eof_fix (2.5.0)
     columnize (0.3.4)
@@ -50,6 +52,7 @@ GEM
     fastthread (1.0.7)
     gem_plugin (0.2.3)
     i18n (0.5.0)
+    json (1.6.5)
     linecache (0.46)
       rbx-require-relative (> 0.0.4)
     machinist (1.0.6)
@@ -120,6 +123,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  assert_valid_markup
   db_populate
   dynamic_form
   exception_notification

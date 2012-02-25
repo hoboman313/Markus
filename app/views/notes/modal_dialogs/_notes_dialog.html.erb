@@ -11,12 +11,12 @@
         <div class="notes_existing">
             <% @notes.each do |note| %>
             <strong><%= note.user.user_name %>: </strong>
-            <br>
+            <br />
             <small><%=note.format_date%></small>
-            <br>
+            <br />
             &nbsp; <%=note.notes_message %>
-            <br>
-            <br>
+            <br />
+            <br />
             <% end %>
         </div>
 
