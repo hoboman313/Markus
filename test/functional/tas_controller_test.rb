@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), '..', 'blueprints', 'helper')
 
 class TasControllerTest < AuthenticatedControllerTest
-  assert_all_valid_markup(:skip_no_doctype => true)
+  assert_all_valid_markup(:ignore_no_doctype => true)
 
   def setup
     clear_fixtures

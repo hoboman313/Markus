@@ -3,7 +3,7 @@ require 'shoulda'
 require 'mocha'
 
   class FlexibleCriteriaControllerTest < AuthenticatedControllerTest
-    assert_all_valid_markup(:skip_no_doctype => true)
+    assert_all_valid_markup(:ignore_no_doctype => true)
 
     fixtures :all
 

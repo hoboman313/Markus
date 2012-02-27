@@ -273,14 +273,14 @@ dp.sh.Highlighter.prototype.AddBit = function(str, css)
 //	str = str.replace(/>/g, '&gt;');
 	str = str.replace(/\n/gm, '&nbsp;<br />');
 
-	// when adding a piece of code, check to see if it has line breaks in it 
+	// when adding a piece of code, check to see if it has line breaks in it
 	// and if it does, wrap individual line breaks with span tags
 	if(css != null)
 	{
 		if((/br/gi).test(str))
 		{
 			var lines = str.split('&nbsp;<br />');
-			
+
 			for(var i = 0; i < lines.length; i++)
 			{
 				span = this.CreateElement('SPAN');

@@ -13,7 +13,7 @@ include ActionDispatch::TestProcess
 # setup of assignment and group sizes is used. This test suite uses
 # SubversionRepository instead of MemoryRepository.
 class GroupsControllerCsvUploadTest < AuthenticatedControllerTest
-  assert_all_valid_markup(:skip_no_doctype => true)
+  assert_all_valid_markup(:ignore_no_doctype => true)
 
   context "An authenticated and authorized admin" do
 

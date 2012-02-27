@@ -10,7 +10,7 @@ class MainController
 end
 
 class MainControllerTest < AuthenticatedControllerTest
-  assert_all_valid_markup(:skip_no_doctype => true)
+  assert_all_valid_markup(:ignore_no_doctype => true)
 
   # TODO need to change username and password for valid logins when
   # actual authentication is in place (i.e. when User.verify is implemented)

@@ -132,7 +132,7 @@ end
 
 # Test class to extend when creating tests for this application;
 # overrides common request types with authentication
-class AuthenticatedControllerTest < ActionController::TestCase 
+class AuthenticatedControllerTest < ActionController::TestCase
   # Performs GET request as the supplied user for authentication
   def get_as(user, action, params=nil, flash=nil)
     session_vars = { 'uid' => user.id, 'timeout' => 3.days.from_now }
