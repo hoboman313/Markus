@@ -63,7 +63,9 @@ group :development, :test do
   gem "time-warp"
   gem "ruby-debug"
   gem "mocha"
-  gem "assert_valid_markup"
+  gem "assert_valid_markup",
+  "0.6.5",
+    :git => "git://github.com/hoboman313/assert_valid_markup.git"
 end
 
 # If you  plan to use clustered mongrel servers for production

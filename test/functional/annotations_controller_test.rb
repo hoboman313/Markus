@@ -1,4 +1,3 @@
-require File.join(File.dirname(__FILE__), 'authenticated_controller_test')
 require File.join(File.dirname(__FILE__), '..', 'blueprints', 'blueprints')
 require File.join(File.dirname(__FILE__), '..', 'blueprints', 'helper')
 
@@ -7,6 +6,7 @@ require 'machinist'
 
 
 class AnnotationsControllerTest < AuthenticatedControllerTest
+  assert_all_valid_markup(:skip_no_doctype => true)
 
   def setup
     clear_fixtures

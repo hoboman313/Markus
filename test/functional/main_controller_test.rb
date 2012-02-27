@@ -1,4 +1,3 @@
-require File.join(File.dirname(__FILE__), 'authenticated_controller_test')
 require File.join(File.dirname(__FILE__), '..', 'blueprints', 'helper')
 require 'shoulda'
 require 'machinist'
@@ -11,6 +10,7 @@ class MainController
 end
 
 class MainControllerTest < AuthenticatedControllerTest
+  assert_all_valid_markup(:skip_no_doctype => true)
 
   # TODO need to change username and password for valid logins when
   # actual authentication is in place (i.e. when User.verify is implemented)

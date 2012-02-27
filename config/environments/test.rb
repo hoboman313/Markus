@@ -1,7 +1,5 @@
 # Settings specified here will take precedence over those in config/environment.rb
 Markus::Application.configure do
-  config.gem 'assert_valid_markup'
-  
   # The test environment is used exclusively to run your application's
   # test suite.  You never need to work with it otherwise.  Remember that
   # your test database is "scratch space" for the test suite and is wiped
@@ -30,7 +28,7 @@ Markus::Application.configure do
   config.active_support.deprecation = :stderr
 
   require 'ruby-debug'
-
+  config.gem 'assert_valid_markup'
   ###################################################################
   # MarkUs SPECIFIC CONFIGURATION
   #   - use "/" as path separator no matter what OS server is running

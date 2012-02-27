@@ -1,8 +1,9 @@
-require File.join(File.dirname(__FILE__), 'authenticated_controller_test')
+require File.join(File.dirname(__FILE__), '..', 'test_helper')
 require 'shoulda'
 require 'mocha'
 
   class FlexibleCriteriaControllerTest < AuthenticatedControllerTest
+    assert_all_valid_markup(:skip_no_doctype => true)
 
     fixtures :all
 

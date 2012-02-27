@@ -1,4 +1,3 @@
-require File.join(File.dirname(__FILE__),  'authenticated_controller_test')
 require File.join(File.dirname(__FILE__), '..', 'test_helper')
 require File.join(File.dirname(__FILE__), '..', 'blueprints', 'blueprints')
 require File.join(File.dirname(__FILE__), '..', 'blueprints', 'helper')
@@ -14,6 +13,8 @@ include ActionDispatch::TestProcess
 # setup of assignment and group sizes is used. This test suite uses
 # SubversionRepository instead of MemoryRepository.
 class GroupsControllerCsvUploadTest < AuthenticatedControllerTest
+  assert_all_valid_markup(:skip_no_doctype => true)
+
   context "An authenticated and authorized admin" do
 
     # We need to use SubversionRepository for this test suite
