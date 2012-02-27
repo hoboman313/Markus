@@ -1,4 +1,7 @@
 ENV["RAILS_ENV"] = "test"
+# Set to false to turn off HTML_VALIDATION
+# Note that w3c validation requires an inet connection
+HTML_VALIDATION = true
 require File.expand_path( File.join('..', '..', 'config', 'environment'), __FILE__)
 require 'rails/test_help'
 require 'mocha'
