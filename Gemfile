@@ -64,7 +64,6 @@ group :development, :test do
   gem "ruby-debug"
   gem "mocha"
   gem "assert_valid_markup",
-  "0.6.5",
     :git => "git://github.com/hoboman313/assert_valid_markup.git"
 end
 

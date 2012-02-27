@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/hoboman313/assert_valid_markup.git
-  revision: 14e11bbc4612f51edb3de7a3c96b4cadee21a0c1
+  revision: af6a0bcc9109ef566d1539337037e9f4be2b5460
   specs:
-    assert_valid_markup (0.6.5)
+    assert_valid_markup (0.6.6)
       json
 
 GIT
@@ -128,7 +128,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  assert_valid_markup (= 0.6.5)!
+  assert_valid_markup!
   db_populate
   dynamic_form
   exception_notification
