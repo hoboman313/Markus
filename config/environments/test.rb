@@ -28,7 +28,6 @@ Markus::Application.configure do
   config.active_support.deprecation = :stderr
 
   require 'ruby-debug'
-  config.gem 'assert_valid_markup'
   ###################################################################
   # MarkUs SPECIFIC CONFIGURATION
   #   - use "/" as path separator no matter what OS server is running
