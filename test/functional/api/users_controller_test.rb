@@ -26,7 +26,7 @@ class Api::UsersControllerTest < ActionController::TestCase
 
     context "/show" do
       setup do
-        get "show", :id => 1
+        get "show", :id => "garbage"
       end
 
       should "fail to authenticate the GET request" do
@@ -46,7 +46,7 @@ class Api::UsersControllerTest < ActionController::TestCase
 
     context "/update" do
       setup do
-        put 'update', :id => 1
+        put 'update', :id => "garbage"
       end
 
       should "fail to authenticate the GET request" do
@@ -56,7 +56,7 @@ class Api::UsersControllerTest < ActionController::TestCase
 
     context "/destroy" do
       setup do
-        delete "destroy", :id => 1
+        delete "destroy", :id => "garbage"
       end
 
       should "fail to authenticate the GET request" do
@@ -85,7 +85,7 @@ class Api::UsersControllerTest < ActionController::TestCase
       # Create dummy user to display
       @user = Student.make
       # fire off request, after setup has been called again, reseting API key.
-      get "show", :id => 1, :user_name => @user.user_name
+      get "show", :id => @user.user_name
       assert_response :success
       assert @response.body.include?(@user.user_name)
       assert @response.body.include?(@user.type)
@@ -144,7 +144,7 @@ class Api::UsersControllerTest < ActionController::TestCase
 
     context "testing the show function with a user that does not exist" do
       setup do
-        get "show", :id => 1, :user_name => "garbage fake user "
+        get "show", :id => "garbage fake user "
       end
 
       should "fail to find the user, 'garbage fake name'" do
@@ -159,7 +159,7 @@ class Api::UsersControllerTest < ActionController::TestCase
         @attr = {:user_name => "ApiTestUser", :last_name => "Tester",
                  :first_name => "Api", :user_type =>"admin" }
         # fire off request
-        post "create", :id => 1, :user_name => "ApiTestUser", :last_name => "Tester",
+        post "create", :id => "ApiTestUser", :last_name => "Tester",
                  :first_name => "Api", :user_type =>"admin"
       end
 
@@ -176,20 +176,20 @@ class Api::UsersControllerTest < ActionController::TestCase
     context "testing the create function with an existing user_name to cause error" do
       setup do
         @user = Student.make
-        @attr = {:user_name => @user.user_name, :last_name => "Tester",
+        @attr = {:id => @user.user_name, :last_name => "Tester",
                  :first_name => "Api", :user_type =>"admin" }
         @res = post("create", @attr)
       end
 
       should "find an existing user and cause conflict" do
-        assert !User.find_by_user_name(@attr[:user_name]).nil?
+        assert !User.find_by_user_name(@attr[:id]).nil?
         assert_response :conflict
       end
     end
 
     context "testing the create function with user_type set to garbage" do
       setup do
-        @attr = {:user_name => "ApiTestUser", :last_name => "Tester",
+        @attr = {:id => "ApiTestUser", :last_name => "Tester",
                  :first_name => "Api", :user_type =>"garbage" }
         @res = post("create", @attr)
       end
@@ -207,25 +207,23 @@ class Api::UsersControllerTest < ActionController::TestCase
                      :last_name => "TesterChanged",
                      :first_name => "UpdatedApi"}
         put "update",
-            :id => 1,
-            :user_name => @user.user_name,
+            :id => @user.user_name,
             :last_name => "TesterChanged",
             :first_name => "UpdatedApi"
       end
 
       should "and a new, non-existing user name" do
-        @new_attr[:new_user_name] = "apitestuser2"
+        @new_attr[:user_name] = "apitestuser2"
         put "update",
-            :id => 1,
-            :user_name => @user.user_name,
-            :new_user_name => 'apitestuser2',
+            :id => @user.user_name,
+            :user_name => 'apitestuser2',
             :last_name => "TesterChanged",
             :first_name => "UpdatedApi"
 
         # Try to find old user_name
         assert User.find_by_user_name(@user.user_name).nil?
         # Find user by new user_name
-        @updated_user2 = User.find_by_user_name(@new_attr[:new_user_name])
+        @updated_user2 = User.find_by_user_name(@new_attr[:user_name])
         assert !@updated_user2.nil?
         assert_equal(@updated_user2.last_name, @new_attr[:last_name])
         assert_equal(@updated_user2.first_name, @new_attr[:first_name])
@@ -241,7 +239,7 @@ class Api::UsersControllerTest < ActionController::TestCase
 
     context "testing the update function with a user_name that does not exist" do
       setup do
-        put "update", :id => 1, :user_name => "garbage", :last_name => "garbage",
+        put "update", :id => "garbage", :last_name => "garbage",
                               :first_name => "garbage"
       end
 
@@ -256,10 +254,10 @@ class Api::UsersControllerTest < ActionController::TestCase
         @user_to_update = Student.make
         @existing_user = Student.make
         # fire off request
-        put "update", :id => 1, :user_name => @user_to_update.user_name,
+        put "update", :id => @user_to_update.user_name,
                               :last_name => "garbage",
                               :first_name => "garbage",
-                              :new_user_name => @existing_user.user_name
+                              :user_name => @existing_user.user_name
       end
 
       should "find the new user_name as existing and cause conflict" do
@@ -269,7 +267,7 @@ class Api::UsersControllerTest < ActionController::TestCase
 
     context "testing the destory function is disabled" do
       setup do
-        delete "destroy", :id => 1
+        delete "destroy", :id => "garbage"
       end
 
       should "pretend the function doesn't exist" do

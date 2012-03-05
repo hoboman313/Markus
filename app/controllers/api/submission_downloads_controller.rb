@@ -10,14 +10,14 @@ module Api
     # Triggered by a HTTP GET request to /api/submission_downloads(.:format)
     # Downloads a SubmissionFile, possibly with annotations.
     # Requires the following parameters:
-    #   group_name:   Name of the group that submitten the file
+    #   group_id:   Name of the group that submitted the file
     #   assignment:   Assignment for which the file was submitted
-    # Allows the following optional paramenters:
+    # Allows the following optional parameters:
     #   filename:     Name of the file, if absent all files will be downloaded
     #   include_annotations:  If 'true', will include annotations in the file(s)
     #=== Returns
     # The requested file, or a zip file containing all requested files
-    def show
+    def index
       if !has_required_http_params?(params)
         # incomplete/invalid HTTP params
         render 'shared/http_status', :locals => { :code => "422", :message => HttpStatusHelper::ERROR_CODE["message"]["422"] }, :status => 422
@@ -25,8 +25,8 @@ module Api
       end
 
       # check if there's a valid submission
-      submission = Submission.get_submission_by_group_and_assignment(params[:group_name],
-                                                                      params[:assignment])
+      submission = Submission.get_submission_by_group_and_assignment(params[:group_id],
+                                                                      params[:assignment_id])
 
       if submission.nil?
         # no such submission
@@ -80,7 +80,7 @@ module Api
 
       #Send the zip file
       if !single_file
-        send_file "tmp/submissions.zip", :disposition => 'inline', :filename => "#{params[:assignment]}_#{params[:group_name]}.zip"
+        send_file "tmp/submissions.zip", :disposition => 'inline', :filename => "#{params[:assignment_id]}_#{params[:group_id]}.zip"
       end
     end
 
@@ -91,8 +91,8 @@ module Api
       # Note: The blank? method is a Rails extension.
       # Specific keys have to be present, and their values
       # must not be blank.
-      if !param_hash[:assignment].blank? &&
-      !param_hash[:group_name].blank?
+      if !param_hash[:assignment_id].blank? &&
+      !param_hash[:group_id].blank?
         return true
       else
         return false

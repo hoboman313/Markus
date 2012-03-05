@@ -8,8 +8,8 @@ module Api
     #=== Description
     # Triggered by a HTTP POST request to /api/test_results(.:format).
     # Creates a new TestResult instance. Requires the following parameters:
-    #   group_name:   Name of the group to which the test result should be associated to
-    #   assignment:   Short identifier of the assignment
+    #   group_id:   Name of the group to which the test result should be associated to
+    #   assignment_id:   Short identifier of the assignment
     #   filename:     Filename of the test result
     #   file_content: Content of the test results
     #=== Returns
@@ -21,8 +21,8 @@ module Api
         return
       end
       # check if there's a valid submission
-      submission = Submission.get_submission_by_group_and_assignment(params[:group_name],
-                                                                      params[:assignment])
+      submission = Submission.get_submission_by_group_and_assignment(params[:group_id],
+                                                                      params[:assignment_id])
       if submission.nil?
         # no such submission
         render 'shared/http_status', :locals => { :code => "404", :message => "Submission was not found" }, :status => 404
@@ -60,8 +60,8 @@ module Api
     #=== Description
     # Triggered by a HTTP DELETE request to /api/test_results(.:format).
     # Deletes a TestResult instance. Requires the following parameters:
-    #   group_name:   Name of the group to which the test result should be associated to
-    #   assignment:   Short identifier of the assignment
+    #   group_id:   Name of the group to which the test result should be associated to
+    #   assignment_id:   Short identifier of the assignment
     #   filename:     Filename of the test result to be deleted
     #=== Returns
     # An XML response, indicating the success/failure for the request
@@ -72,8 +72,8 @@ module Api
         return
       end
       # check if there's a valid submission
-      submission = Submission.get_submission_by_group_and_assignment(params[:group_name],
-                                                                      params[:assignment])
+      submission = Submission.get_submission_by_group_and_assignment(params[:group_id],
+                                                                      params[:assignment_id])
       if submission.nil?
         # no such submission
         render 'shared/http_status', :locals => { :code => "404", :message => "Submission was not found" }, :status => 404
@@ -100,8 +100,8 @@ module Api
     #=== Description
     # Triggered by a HTTP PUT request to /api/test_results(.:format).
     # Updates (overwrites) a TestResult instance. Requires the following parameters:
-    #   group_name:   Name of the group to which the test result should be associated to
-    #   assignment:   Short identifier of the assignment
+    #   group_id:   Name of the group to which the test result should be associated to
+    #   assignment_id:   Short identifier of the assignment
     #   filename:     Filename of the test result, which content should be updated
     #   file_content: New content of the test result
     #=== Returns
@@ -113,8 +113,8 @@ module Api
         return
       end
       # check if there's a valid submission
-      submission = Submission.get_submission_by_group_and_assignment(params[:group_name],
-                                                                      params[:assignment])
+      submission = Submission.get_submission_by_group_and_assignment(params[:group_id],
+                                                                      params[:assignment_id])
       if submission.nil?
         # no such submission
          render 'shared/http_status', :locals => { :code => "404", :message => "Submission was not found" }, :status => 404
@@ -141,20 +141,20 @@ module Api
     #=== Description
     # Triggered by a HTTP GET request to /api/test_results(.:format).
     # Shows a TestResult instance. Requires the following parameters:
-    #   group_name:   Name of the group to which the test result should be associated to
-    #   assignment:   Short identifier of the assignment
+    #   group_id:   Name of the group to which the test result should be associated to
+    #   assignment_id:   Short identifier of the assignment
     #   filename:     New filename of the test result
     #=== Returns
     # The content of the test result file in question
-    def show
+    def index
       if !has_required_http_params?(params)
         # incomplete/invalid HTTP params
         render 'shared/http_status', :locals => { :code => "422", :message => HttpStatusHelper::ERROR_CODE["message"]["422"] }, :status => 422
         return
       end
       # check if there's a valid submission
-      submission = Submission.get_submission_by_group_and_assignment(params[:group_name],
-                                                                      params[:assignment])
+      submission = Submission.get_submission_by_group_and_assignment(params[:group_id],
+                                                                      params[:assignment_id])
       if submission.nil?
         # no such submission
         render 'shared/http_status', :locals => { :code => "404", :message => "Submission was not found" }, :status => 404
@@ -181,9 +181,9 @@ module Api
       # Specific keys have to be present, and their values
       # must not be blank.
       if !param_hash[:filename].blank? &&
-   !param_hash[:assignment].blank? &&
-   !param_hash[:group_name].blank?
-  return true
+      !param_hash[:assignment_id].blank? &&
+      !param_hash[:group_id].blank?
+        return true
       else
         return false
       end

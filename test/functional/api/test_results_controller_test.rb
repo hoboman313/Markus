@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), '..', '..', 'test_helper')
 require 'shoulda'
 require 'base64'
 
-# Tests the test results handlers (create, destroy, update, show)
+# Tests the test results handlers (create, destroy, update, index)
 class Api::TestResultsControllerTest < ActionController::TestCase
 
   fixtures :all
@@ -22,7 +22,7 @@ class Api::TestResultsControllerTest < ActionController::TestCase
       a_short_identifier = assignment.short_identifier
       filename = @test_result.filename
       # fire off request
-      @res = get("show", {:id => 1, :group_name => group_name, :assignment => a_short_identifier,
+      @res = get("index", {:group_id => group_name, :assignment_id => a_short_identifier,
                           :filename => filename})
     end
 
@@ -35,7 +35,7 @@ class Api::TestResultsControllerTest < ActionController::TestCase
     context "getting a text response" do
       setup do
         @request.env['HTTP_ACCEPT'] = 'text/plain'
-        get "show", :id => "garbage"
+        get "index", :group_id => "garbage", :assignment_id => "garbage" 
       end
 
       should "be successful" do
@@ -47,7 +47,7 @@ class Api::TestResultsControllerTest < ActionController::TestCase
     context "getting a json response" do
       setup do
         @request.env['HTTP_ACCEPT'] = 'application/json'
-        get "show", :id => "garbage"
+        get "index", :group_id => "garbage", :assignment_id => "garbage" 
       end
 
       should "be successful" do
@@ -59,7 +59,7 @@ class Api::TestResultsControllerTest < ActionController::TestCase
     context "getting an xml response" do
       setup do
         @request.env['HTTP_ACCEPT'] = 'application/xml'
-        get "show", :id => "garbage"
+        get "index", :group_id => "garbage", :assignment_id => "garbage" 
       end
 
       should "be successful" do
@@ -71,7 +71,7 @@ class Api::TestResultsControllerTest < ActionController::TestCase
     context "getting an rss response" do
       setup do
         @request.env['HTTP_ACCEPT'] = 'application/rss'
-        get "show", :id => "garbage"
+        get "index", :group_id => "garbage", :assignment_id => "garbage" 
       end
 
       should "not be successful" do
@@ -101,7 +101,7 @@ class Api::TestResultsControllerTest < ActionController::TestCase
       test_results = @submission.test_results # returns Array
       @test_results_count_pre_post = test_results.length
       # fire off request
-      @res = post("create", {:group_name => group_name, :assignment => a_short_identifier,
+      @res = post("create", {:group_id => group_name, :assignment_id => a_short_identifier,
                              :filename => @filename, :file_content => @file_content})
     end
 
@@ -140,7 +140,7 @@ class Api::TestResultsControllerTest < ActionController::TestCase
       test_results = @submission.test_results # returns Array
       @test_results_count_pre_post = test_results.length
       @to_be_deleted_test_result = "example.rb"
-      @res = delete("destroy", {:id => 1, :group_name => group_name, :assignment => a_short_identifier,
+      @res = delete("destroy", {:group_id => group_name, :assignment_id => a_short_identifier,
                                 :filename => @to_be_deleted_test_result})
     end
 
@@ -176,7 +176,7 @@ class Api::TestResultsControllerTest < ActionController::TestCase
       group_name = group.group_name
       a_short_identifier = assignment.short_identifier
       grouping = group.grouping_for_assignment(assignment.id)
-      @res = put("update", {:id => 1, :group_name => group_name, :assignment => a_short_identifier,
+      @res = put("update", {:group_id => group_name, :assignment_id => a_short_identifier,
                             :filename => @filename, :file_content => @file_content})
     end
 
@@ -198,8 +198,13 @@ class Api::TestResultsControllerTest < ActionController::TestCase
       auth_http_header = "MarkUsAuth #{base_encoded_md5}"
       @request.env['HTTP_AUTHORIZATION'] = auth_http_header
       @request.env['HTTP_ACCEPT'] = 'text/plain'
+      # get parameters from fixtures
+      group = groups(:group_test_result1)
+      assignment = assignments(:assignment_test_result1)
+      group_name = group.group_name
+      a_short_identifier = assignment.short_identifier
       # parameters
-      @res = get("show", {:id => 1, :filename => "some_filename"})
+      @res = get("index", {:group_id => group_name, :assignment_id => a_short_identifier})
     end
 
     should assign_to :current_user
@@ -217,7 +222,12 @@ class Api::TestResultsControllerTest < ActionController::TestCase
       auth_http_header = "MarkUsAuth #{base_encoded_md5}"
       @request.env['HTTP_ACCEPT'] = 'text/plain'
       @request.env['HTTP_AUTHORIZATION'] = auth_http_header
-      @res = post("create", {:filename => "some_filename"})
+      # get parameters from fixtures
+      group = groups(:group_test_result1)
+      assignment = assignments(:assignment_test_result1)
+      group_name = group.group_name
+      a_short_identifier = assignment.short_identifier
+      @res = post("create", {:group_id => group_name, :assignment_id => a_short_identifier, :filename => "some_filename"})
     end
 
     should assign_to :current_user
@@ -235,7 +245,12 @@ class Api::TestResultsControllerTest < ActionController::TestCase
       auth_http_header = "MarkUsAuth #{base_encoded_md5}"
       @request.env['HTTP_AUTHORIZATION'] = auth_http_header
       @request.env['HTTP_ACCEPT'] = 'text/plain'
-      @res = put("update", {:id => 1, :filename => "some_filename"})
+      # get parameters from fixtures
+      group = groups(:group_test_result1)
+      assignment = assignments(:assignment_test_result1)
+      group_name = group.group_name
+      a_short_identifier = assignment.short_identifier
+      @res = put("update", {:group_id => group_name, :assignment_id => a_short_identifier, :filename => "some_filename"})
     end
 
     should assign_to :current_user
@@ -253,7 +268,12 @@ class Api::TestResultsControllerTest < ActionController::TestCase
       auth_http_header = "MarkUsAuth #{base_encoded_md5}"
       @request.env['HTTP_AUTHORIZATION'] = auth_http_header
       @request.env['HTTP_ACCEPT'] = 'text/plain'
-      @res = delete("destroy", {:id => 1, :filename => "somefilename"})
+      # get parameters from fixtures
+      group = groups(:group_test_result1)
+      assignment = assignments(:assignment_test_result1)
+      group_name = group.group_name
+      a_short_identifier = assignment.short_identifier
+      @res = delete("destroy", {:group_id => group_name, :assignment_id => a_short_identifier})
     end
 
     should assign_to :current_user
@@ -276,7 +296,7 @@ class Api::TestResultsControllerTest < ActionController::TestCase
       assignment = assignments(:assignment_test_result1)
       group_name = group.group_name
       a_short_identifier = assignment.short_identifier
-      @res = delete("destroy", {:id => 1, :group_name => group_name, :assignment => a_short_identifier,
+      @res = delete("destroy", {:group_id => group_name, :assignment_id => a_short_identifier,
                                 :filename => "does_not_exist"})
     end
 
@@ -300,7 +320,7 @@ class Api::TestResultsControllerTest < ActionController::TestCase
       assignment = assignments(:assignment_test_result1)
       group_name = group.group_name
       a_short_identifier = assignment.short_identifier
-      @res = get("show", {:id => 1, :group_name => group_name, :assignment => a_short_identifier,
+      @res = get("index", {:group_id => group_name, :assignment_id => a_short_identifier,
                           :filename => "does_not_exist"})
     end
 
@@ -324,7 +344,7 @@ class Api::TestResultsControllerTest < ActionController::TestCase
       assignment = assignments(:assignment_test_result1)
       group_name = group.group_name
       a_short_identifier = assignment.short_identifier
-      @res = put("update", {:id => 1, :group_name => group_name, :assignment => a_short_identifier,
+      @res = put("update", {:group_id => group_name, :assignment_id => a_short_identifier,
                             :filename => "does_not_exist", :file_content => "irrelevant"})
     end
 

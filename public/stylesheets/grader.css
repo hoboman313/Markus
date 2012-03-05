@@ -164,7 +164,7 @@ li.annotation_category {
     width: 4px;
     margin: 0 2px 10px 2px;
     height: 722px;
-    background-color: DDDDDD;
+    background-color: #DDDDDD;
     cursor: col-resize;
   }
 
@@ -294,7 +294,6 @@ li.annotation_category {
   width:13px;
   background-image:url("/stylesheets/window_close.gif");
   cursor:pointer;
-  cursor:hand;
 }
 
 /* Annotation summary list styles */

@@ -4,7 +4,7 @@ module Api
   # Allows for adding, modifying and showing users into MarkUs.
   # Uses Rails' RESTful routes (check 'rake routes' for the configured routes)
   class UsersController < MainApiController
-    # Requires user_name, user_type,  last_name, first_name, [section_name], [grace_credits]
+    # Requires user_type,  last_name, first_name, [section_name], [grace_credits]
     def create
       if has_missing_params?(params)
         # incomplete/invalid HTTP params
@@ -13,7 +13,7 @@ module Api
       end
 
       # check if there is an existing user
-      user = User.find_by_user_name(params[:user_name])
+      user = User.find_by_user_name(params[:id])
       if !user.nil?
         render 'shared/http_status', :locals => { :code => "409", :message => "User already exists" }, :status => 409
         return
@@ -32,7 +32,7 @@ module Api
         return
       end
 
-      attributes = { :user_name => params[:user_name] }
+      attributes = { :user_name => params[:id] }
       attributes = process_attributes(params, attributes)
 
       new_user = user_type.new(attributes)
@@ -52,29 +52,29 @@ module Api
       render 'shared/http_status', :locals => { :code => "404", :message => HttpStatusHelper::ERROR_CODE["message"]["404"] }, :status => 404
     end
 
-    # Requires user_name, [first_name], [last_name], [new_user_name], [section_name], [grace_credits]
+    # Requires  [first_name], [last_name], [user_name], [section_name], [grace_credits]
     def update
-      if params[:user_name].blank?
+      if params[:id].blank?
         # incomplete/invalid HTTP params
         render 'shared/http_status', :locals => { :code => "422", :message => HttpStatusHelper::ERROR_CODE["message"]["422"] }, :status => 422
         return
       end
 
       # If no user is found, render an error.
-      user = User.find_by_user_name(params[:user_name])
+      user = User.find_by_user_name(params[:id])
       if user.nil?
         render 'shared/http_status', :locals => { :code => "404", :message => "User was not found" }, :status => 404
         return
       end
 
-      updated_user_name = params[:user_name]
-      if !params[:new_user_name].blank?
+      updated_user_name = params[:id]
+      if !params[:user_name].blank?
         # Make sure new user_name does not exist
-        if !User.find_by_user_name(params[:new_user_name]).nil?
+        if !User.find_by_user_name(params[:user_name]).nil?
           render 'shared/http_status', :locals => { :code => "409", :message => "User already exists" }, :status => 409
           return
         end
-        updated_user_name = params[:new_user_name]
+        updated_user_name = params[:user_name]
       end
 
       attributes={:user_name => updated_user_name}
@@ -103,16 +103,16 @@ module Api
       end
     end
 
-    # Requires user_name
+    # Requires id ( user name )
     def show
-      if params[:user_name].blank?
+      if params[:id].blank?
         # incomplete/invalid HTTP params
         render 'shared/http_status', :locals => { :code => "422", :message => "Missing user name" }, :status => 422
         return
       end
 
       # check if there's a valid user.
-      user = User.find_by_user_name(params[:user_name])
+      user = User.find_by_user_name(params[:id])
       if user.nil?
         # no such user
         render 'shared/http_status', :locals => { :code => "404", :message => "User was not found" }, :status => 404
@@ -170,9 +170,9 @@ module Api
         return attributes
     end
 
-    # Checks user_name, first_name, last_name, user_type.
+    # Checks id ( user's name ), first_name, last_name, user_type.
     def has_missing_params?(params)
-      return params[:user_name].blank? || params[:user_type].blank? ||
+      return params[:id].blank? || params[:user_type].blank? ||
          params[:first_name].blank? || params[:last_name].blank?
     end
   end # end UsersController
