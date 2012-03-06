@@ -4,7 +4,7 @@ module Api
   # Allows for adding, modifying and showing users into MarkUs.
   # Uses Rails' RESTful routes (check 'rake routes' for the configured routes)
   class UsersController < MainApiController
-    # Requires user_type,  last_name, first_name, [section_name], [grace_credits]
+    # Requires user_name, user_type, last_name, first_name, [section_name], [grace_credits]
     def create
       if has_missing_params?(params)
         # incomplete/invalid HTTP params
@@ -13,7 +13,7 @@ module Api
       end
 
       # check if there is an existing user
-      user = User.find_by_user_name(params[:id])
+      user = User.find_by_user_name(params[:user_name])
       if !user.nil?
         render 'shared/http_status', :locals => { :code => "409", :message => "User already exists" }, :status => 409
         return
@@ -32,7 +32,7 @@ module Api
         return
       end
 
-      attributes = { :user_name => params[:id] }
+      attributes = { :user_name => params[:user_name] }
       attributes = process_attributes(params, attributes)
 
       new_user = user_type.new(attributes)
@@ -172,7 +172,7 @@ module Api
 
     # Checks id ( user's name ), first_name, last_name, user_type.
     def has_missing_params?(params)
-      return params[:id].blank? || params[:user_type].blank? ||
+      return params[:user_name].blank? || params[:user_type].blank? ||
          params[:first_name].blank? || params[:last_name].blank?
     end
   end # end UsersController

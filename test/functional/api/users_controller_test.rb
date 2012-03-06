@@ -159,7 +159,7 @@ class Api::UsersControllerTest < ActionController::TestCase
         @attr = {:user_name => "ApiTestUser", :last_name => "Tester",
                  :first_name => "Api", :user_type =>"admin" }
         # fire off request
-        post "create", :id => "ApiTestUser", :last_name => "Tester",
+        post "create", :user_name => "ApiTestUser", :last_name => "Tester",
                  :first_name => "Api", :user_type =>"admin"
       end
 
@@ -176,20 +176,20 @@ class Api::UsersControllerTest < ActionController::TestCase
     context "testing the create function with an existing user_name to cause error" do
       setup do
         @user = Student.make
-        @attr = {:id => @user.user_name, :last_name => "Tester",
+        @attr = {:user_name => @user.user_name, :last_name => "Tester",
                  :first_name => "Api", :user_type =>"admin" }
         @res = post("create", @attr)
       end
 
       should "find an existing user and cause conflict" do
-        assert !User.find_by_user_name(@attr[:id]).nil?
+        assert !User.find_by_user_name(@attr[:user_name]).nil?
         assert_response :conflict
       end
     end
 
     context "testing the create function with user_type set to garbage" do
       setup do
-        @attr = {:id => "ApiTestUser", :last_name => "Tester",
+        @attr = {:user_name => "ApiTestUser", :last_name => "Tester",
                  :first_name => "Api", :user_type =>"garbage" }
         @res = post("create", @attr)
       end

@@ -6,9 +6,9 @@ Markus::Application.routes.draw do
 
   # Install the default routes as the lowest priority.
   root :controller => "main", :action => "login"
-   # API routes
+  # API routes
   namespace :api, :defaults => { :format => 'text' } do
-    
+
     resources :assignments, :controller => "assignments_api", :except => [:new, :edit] do
       resources :groups, :controller => "groupss_api", :except => [:new, :edit] do
         resources :test_results, :except => [:new, :edit, :show] do
@@ -19,7 +19,7 @@ Markus::Application.routes.draw do
         end
         resources :submission_downloads, :except => [:new, :edit, :show, :destroy, :create, :update]
       end
-      
+
     end
 
     resources :users, :except => [:new, :edit]    
