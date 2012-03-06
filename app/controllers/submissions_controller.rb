@@ -186,7 +186,7 @@ class SubmissionsController < ApplicationController
           @table_rows[directory.id] = construct_file_manager_dir_table_row(directory_name, directory)
         end
       end
-      render :action => 'file_manager_populate'
+      render :file_manager_populate
     end
   end
 
@@ -302,7 +302,7 @@ class SubmissionsController < ApplicationController
 
   def index
     @assignments = Assignment.all(:order => :id)
-    render :action => 'index', :layout => 'sidebar'
+    render :index, :layout => 'sidebar'
   end
 
   # update_files action handles transactional submission of files.
@@ -329,7 +329,7 @@ class SubmissionsController < ApplicationController
     if !@grouping.is_valid?
       # can't use redirect_to here. See comment of this action for more details.
       set_filebrowser_vars(@grouping.group, @assignment)
-      render :action => "file_manager", :id => assignment_id
+      render :file_manager, :id => assignment_id
       return
     end
     @grouping.group.access_repo do |repo|
@@ -390,7 +390,7 @@ class SubmissionsController < ApplicationController
           flash[:transaction_warning] = I18n.t("student.submission.no_action_detected")
           # can't use redirect_to here. See comment of this action for more details.
           set_filebrowser_vars(@grouping.group, @assignment)
-          render :action => "file_manager", :id => assignment_id
+          render :file_manager, :id => assignment_id
           return
         end
         if !repo.commit(txn)
@@ -410,7 +410,7 @@ class SubmissionsController < ApplicationController
         end
         # can't use redirect_to here. See comment of this action for more details.
         set_filebrowser_vars(@grouping.group, @assignment)
-        render :action => "file_manager", :id => assignment_id
+        render :file_manager, :id => assignment_id
 
       rescue Exception => e
         m_logger = MarkusLogger.instance
@@ -418,7 +418,7 @@ class SubmissionsController < ApplicationController
         # can't use redirect_to here. See comment of this action for more details.
         @file_manager_errors[:commit_error] = e.message
         set_filebrowser_vars(@grouping.group, @assignment)
-        render :action => "file_manager", :id => assignment_id
+        render :file_manager, :id => assignment_id
       end
     end
   end
