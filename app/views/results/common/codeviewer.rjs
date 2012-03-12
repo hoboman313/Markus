@@ -3,6 +3,11 @@
     page['code_pane'].onmousemove = nil
     #Non-binary files
     if !SubmissionFile.is_binary?(@file_contents)
+      if @encoding == "unknown"
+        print_cant_render_error
+        return
+      end
+      @file_contents = Iconv.conv("utf-8", @encoding, @file_contents)
       page.replace_html 'codeviewer',
         :partial => 'results/common/text_codeviewer',
         :locals => { :uid => params[:uid], :file_contents => @file_contents,
@@ -16,6 +21,11 @@
         :submission_file_id => @submission_file_id}
     #Rest of the files
     else
+      if @encoding == "unknown"
+        print_cant_render_error
+        return
+      end
+      @file_contents = Iconv.conv("utf-8", @encoding, @file_contents)
       page.replace_html 'codeviewer',
         :partial => 'results/common/text_codeviewer',
         :locals => { :uid => params[:uid],
@@ -45,9 +55,12 @@
     # to convert to JSON.  This is scheduled for fixing in Rails 2.3.4.
     # Until then, we'll just ask the user to download the file.
 
-    # TODO:  Make this more graceful, and localized
-    page.call "alert", "Could not render this file in the code viewer.  Click on the Download button to download the file instead."
-    page.alert e.message
+    print_cant_render_error
 
 end
 
+def print_cant_render_error
+    # TODO:  Make this more graceful, and localized
+    page.call "alert", "Could not render this file in the code viewer.  Click on the Download button to download the file instead."
+    page.alert e.message
+end

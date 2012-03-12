@@ -832,17 +832,16 @@ input#extra_mark_description{
   padding: 3px 30px;
   background: #BDFCC9 url(../images/icons/accept.png) no-repeat;
   background-position: 7px;
-  margin: 5px;
+  margin: 5px 5px 5px 0px;
 }
 
 .error, .errorExplanation{
   text-align: left;
   border: 1px solid #E6DB55;
   padding: 3px 3em;
-  margin: 1em 4em 1em 4em;
   background: #FFFFE0 url(../images/icons/exclamation.png) no-repeat;
   background-position: 7px;
-  margin: 5px;
+  margin: 5px 5px 5px 0px;
 }
 
 .error h2, .errorExplanation h2{
@@ -867,7 +866,7 @@ input#extra_mark_description{
   background: #FFFFE0;
   border: 1px solid #E6DB55;
   padding: 3px 30px;
-  margin: 5px;
+  margin: 5px 5px 5px 0px;
 }
 
 .information{
@@ -875,7 +874,6 @@ input#extra_mark_description{
   padding: 3px 30px;
   background: #EFEFEF url(../images/icons/information.png) no-repeat;
   background-position: 7px;
-
 }
 
 .warning {
@@ -883,7 +881,6 @@ input#extra_mark_description{
   padding: 3px 30px;
   background: #FFFFE0 url(../images/icons/error.png) no-repeat;
   background-position: 7px;
-
 }
 
 .group form {

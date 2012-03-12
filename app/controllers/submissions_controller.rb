@@ -88,6 +88,8 @@ class SubmissionsController < ApplicationController
       }
     }
   }
+  
+  MIN_CONFIDENCE = 0.9
 
   def repo_browser
     @assignment = Assignment.find(params[:assignment_id])
@@ -368,6 +370,14 @@ class SubmissionsController < ApplicationController
           # Sometimes the file pointer of file_object is at the end of the file.
           # In order to avoid empty uploaded files, rewind it to be save.
           file_object.rewind
+
+          cd = CharDet.detect(file_object.read)
+          if ( cd["encoding"] != "ascii" and cd["encoding"] != "utf-8" ) or cd["confidence"] < MIN_CONFIDENCE
+            @bad_encoding_files = @bad_encoding_files.nil? ? file_object.original_filename : @bad_encoding_files + ", " + file_object.original_filename
+            flash[:commit_notice] = I18n.t("student.submission.bad_encoding", :files => @bad_encoding_files )
+          end
+          file_object.rewind
+
           txn.replace(File.join(assignment_folder, filename), file_object.read, file_object.content_type, file_revisions[filename])
           log_messages.push("Student '#{current_user.user_name}' replaced content of file '#{filename}' for assignment '#{@assignment.short_identifier}'.")
         end
@@ -378,9 +388,18 @@ class SubmissionsController < ApplicationController
           if file_object.original_filename.nil?
             raise I18n.t("student.submission.invalid_file_name")
           end
+
           # Sometimes the file pointer of file_object is at the end of the file.
           # In order to avoid empty uploaded files, rewind it to be save.
           file_object.rewind
+
+          cd = CharDet.detect(file_object.read)
+          if ( cd["encoding"] != "ascii" and cd["encoding"] != "utf-8" ) or cd["confidence"] < MIN_CONFIDENCE
+            @bad_encoding_files = @bad_encoding_files.nil? ? file_object.original_filename : @bad_encoding_files + ", " + file_object.original_filename
+            flash[:commit_notice] = I18n.t("student.submission.bad_encoding", :files => @bad_encoding_files )
+          end
+          file_object.rewind
+
           txn.add(File.join(assignment_folder, sanitize_file_name(file_object.original_filename)), file_object.read, file_object.content_type)
           log_messages.push("Student '#{current_user.user_name}' submitted file '#{file_object.original_filename}' for assignment '#{@assignment.short_identifier}'.")
         end
@@ -404,10 +423,6 @@ class SubmissionsController < ApplicationController
           end
         end
 
-        # Are we past collection time?
-        if @assignment.submission_rule.can_collect_now?
-          flash[:commit_notice] = @assignment.submission_rule.commit_after_collection_message(@grouping)
-        end
         # can't use redirect_to here. See comment of this action for more details.
         set_filebrowser_vars(@grouping.group, @assignment)
         render :file_manager, :id => assignment_id

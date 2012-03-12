@@ -1,3 +1,6 @@
+require 'rchardet'
+require 'iconv'
+
 class ResultsController < ApplicationController
   before_filter :authorize_only_for_admin,
                 :except => [:codeviewer,
@@ -234,6 +237,19 @@ class ResultsController < ApplicationController
       return
     end
     @code_type = @file.get_file_type
+
+    if @file.encoding.nil?
+      cd = CharDet.detect(@file_contents)
+      @encoding = cd["encoding"]
+      if @encoding.nil?
+        @encoding = "unknown"
+      end
+      @file.encoding = @encoding
+      @file.save
+    else
+      @encoding = @file.encoding 
+    end
+
     render :template => 'results/common/codeviewer'
   end
 
