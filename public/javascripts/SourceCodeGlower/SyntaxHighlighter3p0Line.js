@@ -1,4 +1,4 @@
-/** Syntax Highlighter 1.5 Source Code Line Class
+/** Syntax Highlighter 3.0 Source Code Line Class
 
 This class implements the SourceCodeLine abstract class.
 
@@ -9,7 +9,7 @@ Rules:
 - Assumes existence of SourceCodeLine abstract class
 **/
 
-var SyntaxHighlighter1p5Line = Class.create(SourceCodeLine, {
+var SyntaxHighlighter3p0Line = Class.create(SourceCodeLine, {
   initialize: function($super, line_node) {
     this.has_alt = $(line_node).hasClassName('alt');
     $super(line_node);

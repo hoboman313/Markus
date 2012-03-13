@@ -15,7 +15,7 @@ function source_code_ready() {
   annotation_manager = null;
   $('loading_code').hide();
   $('select_file_id').enable();
-  syntax_highlighter_adapter = new SyntaxHighlighter1p5Adapter($$('.dp-highlighter').first().getElementsBySelector('ol').first());
+  syntax_highlighter_adapter = new SyntaxHighlighter3p0Adapter($$('#code').first().getElementsBySelector('table').first());
 
   //Apply modifications to Syntax Highlighter
   syntax_highlighter_adapter.applyMods();

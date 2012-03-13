@@ -1,10 +1,13 @@
 <% content_for :head do %>
   <%= stylesheet_link_tag("livepipe/tabs") %>
-  <%= stylesheet_link_tag("SyntaxHighlighter") %>
+  <%= stylesheet_link_tag("syntaxhighlighter/shCoreDefault.css") %>
+  <%= stylesheet_link_tag("syntaxhighlighter/shThemeDefault.css") %>
   <%= stylesheet_link_tag("grader") %>
 <% end %>
 
-<% # UI LIBRARIES %>
+<% 
+  # UI LIBRARIES 
+%>
 <%= javascript_include_tag "livepipe/livepipe.js",
   "livepipe/window.js",
   "livepipe/tabs.js" %>
@@ -13,7 +16,9 @@
 <%= javascript_include_tag "DropDownMenu/DropDownMenu.js"%>
 <%= javascript_include_tag "ResizePane/ResizePane.js"%>
 
-<% # SOURCE CODE GLOWER AND IMAGE ANNOTATION MANAGER %>
+<% 
+  # SOURCE CODE GLOWER AND IMAGE ANNOTATION MANAGER 
+%>
 <%= javascript_include_tag "SourceCodeGlower/AnnotationText.js",
   "SourceCodeGlower/AnnotationTextDisplayer.js",
   "SourceCodeGlower/AnnotationTextManager.js",
@@ -26,26 +31,24 @@
   "SourceCodeGlower/SourceCodeLineManager.js",
   "SourceCodeGlower/SourceCodeLineFactory.js",
   "SourceCodeGlower/SourceCodeAdapter.js",
-  "SourceCodeGlower/SyntaxHighlighter1p5Adapter.js",
+  "SourceCodeGlower/SyntaxHighlighter3p0Adapter.js",
   "SourceCodeGlower/ImageAnnotationGrid.js",
   "SourceCodeGlower/ImageEventHandler.js" %>
 
-<% # SYNTAX HIGHLIGHTER %>
+<% 
+  # SYNTAX HIGHLIGHTER 
+%>
 <%= javascript_include_tag "syntaxhighlighter/shCore.js",
-  "syntaxhighlighter/shBrushJava.js",
-  "syntaxhighlighter/shBrushXml.js",
-  "syntaxhighlighter/shBrushRuby.js",
-  "syntaxhighlighter/shBrushPython.js",
-  "syntaxhighlighter/shBrushJScript.js",
-  "syntaxhighlighter/shBrushCpp.js",
-  "syntaxhighlighter/shBrushScheme.js",
-  "syntaxhighlighter/shBrushScilab.js",
-  "syntaxhighlighter/shBrushUnknown.js" %>
+  "syntaxhighlighter/shAutoloader.js" %>
 
-<% # VIEWING MARKS FUNCTIONS %>
+<% 
+  # VIEWING MARKS FUNCTIONS 
+%>
 <%= javascript_include_tag "Grader/file_selector.js" %>
 
-<% # BOOT SCRIPTS %>
+<% 
+  # BOOT SCRIPTS 
+%>
 <%= javascript_include_tag "Grader/tabs_boot.js" %>
 
 <%

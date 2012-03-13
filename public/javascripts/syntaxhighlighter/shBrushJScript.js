@@ -1,22 +1,52 @@
-dp.sh.Brushes.JScript = function()
+/**
+ * SyntaxHighlighter
+ * http://alexgorbatchev.com/SyntaxHighlighter
+ *
+ * SyntaxHighlighter is donationware. If you are using it, please donate.
+ * http://alexgorbatchev.com/SyntaxHighlighter/donate.html
+ *
+ * @version
+ * 3.0.83 (July 02 2010)
+ * 
+ * @copyright
+ * Copyright (C) 2004-2010 Alex Gorbatchev.
+ *
+ * @license
+ * Dual licensed under the MIT and GPL licenses.
+ */
+;(function()
 {
-	var keywords =	'abstract boolean break byte case catch char class const continue debugger ' +
-					'default delete do double else enum export extends false final finally float ' +
-					'for function goto if implements import in instanceof int interface long native ' +
-					'new null package private protected public return short static super switch ' +
-					'synchronized this throw throws transient true try typeof var void volatile while with';
+	// CommonJS
+	typeof(require) != 'undefined' ? SyntaxHighlighter = require('shCore').SyntaxHighlighter : null;
 
-	this.regexList = [
-		{ regex: dp.sh.RegexLib.SingleLineCComments,				css: 'comment' },			// one line comments
-		{ regex: dp.sh.RegexLib.MultiLineCComments,					css: 'comment' },			// multiline comments
-		{ regex: dp.sh.RegexLib.DoubleQuotedString,					css: 'string' },			// double quoted strings
-		{ regex: dp.sh.RegexLib.SingleQuotedString,					css: 'string' },			// single quoted strings
-		{ regex: new RegExp('^\\s*#.*', 'gm'),						css: 'preprocessor' },		// preprocessor tags like #region and #endregion
-		{ regex: new RegExp(this.GetKeywords(keywords), 'gm'),		css: 'keyword' }			// keywords
-		];
+	function Brush()
+	{
+		var keywords =	'break case catch continue ' +
+						'default delete do else false  ' +
+						'for function if in instanceof ' +
+						'new null return super switch ' +
+						'this throw true try typeof var while with'
+						;
 
-	this.CssClass = 'dp-c';
-}
+		var r = SyntaxHighlighter.regexLib;
+		
+		this.regexList = [
+			{ regex: r.multiLineDoubleQuotedString,					css: 'string' },			// double quoted strings
+			{ regex: r.multiLineSingleQuotedString,					css: 'string' },			// single quoted strings
+			{ regex: r.singleLineCComments,							css: 'comments' },			// one line comments
+			{ regex: r.multiLineCComments,							css: 'comments' },			// multiline comments
+			{ regex: /\s*#.*/gm,									css: 'preprocessor' },		// preprocessor tags like #region and #endregion
+			{ regex: new RegExp(this.getKeywords(keywords), 'gm'),	css: 'keyword' }			// keywords
+			];
+	
+		this.forHtmlScript(r.scriptScriptTags);
+	};
 
-dp.sh.Brushes.JScript.prototype	= new dp.sh.Highlighter();
-dp.sh.Brushes.JScript.Aliases	= ['js', 'jscript', 'javascript'];
+	Brush.prototype	= new SyntaxHighlighter.Highlighter();
+	Brush.aliases	= ['js', 'jscript', 'javascript'];
+
+	SyntaxHighlighter.brushes.JScript = Brush;
+
+	// CommonJS
+	typeof(exports) != 'undefined' ? exports.Brush = Brush : null;
+})();
