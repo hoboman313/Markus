@@ -45,7 +45,7 @@ var SyntaxHighlighter3p0Adapter = Class.create(SourceCodeAdapter, {
     //commands   
     me = this;
     var original_commands = SyntaxHighlighter.toolbar.items;
-    original_commands.list = new Array("BoostCode","ShrinkCode").concat(original_commands.list);
+    original_commands.list = new Array("BoostCode","ShrinkCode", "help");
 
     original_commands.BoostCode = {
 	  execute: function(highlighter) {
