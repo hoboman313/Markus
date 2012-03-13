@@ -44,12 +44,12 @@
   <div class="success"><%= flash[:success] %></div>
 <% end %>
 
-<% if @assignment.submission_rule.can_collect_now? %>
-  <div class="warning">
-    <%= h(@assignment.submission_rule.after_collection_message(@grouping)) %>
-  </div>
-<% else %>
-  <% if @assignment.section_past_due_date?(@grouping) %>
+<% if !(flash[:commit_notice]) %>
+  <% if @assignment.submission_rule.can_collect_now? %>
+    <div class="warning">
+      <%= h(@assignment.submission_rule.after_collection_message(@grouping)) %>
+    </div>
+  <% elsif  @assignment.section_past_due_date?(@grouping)%>
     <div class="warning">
       <%= h(@assignment.submission_rule.overtime_message(@grouping)) %>
     </div>

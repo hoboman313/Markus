@@ -6,6 +6,7 @@
        <% if can_show_remark_request_tab_in_marker_pane(submission) %>
           <li class="tab"><a href="#remark_request_tab"><%= I18n.t("marker.remark_request") %></a></li>
        <% end %>
+       <li class="tab"><a href="#view_options"><%= I18n.t("marker.view_options") %></a></li>
     </ul>
     <div id="code_holder" class="tabbedArea">
       <div id="annotation_menu">
@@ -37,6 +38,11 @@
 
 
     </div> <!-- Remark Request -->
+    
+    <div id="view_options" class="tabbedArea">
+      <h3><%= I18n.t("marker.view_options") %></h3>
+      <%= render :partial => 'results/marker/view_options' %>
+    </div> 
 
     <div id="remark_request_tab" class="tabbedArea">
       <% if @submission.has_remark? %>

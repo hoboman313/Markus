@@ -228,7 +228,6 @@ Markus::Application.configure do
 
   #####################################################################
   # Markus Session Store configuration
-  # see config/initializers/session_store.rb
   #####################################################################
   SESSION_COOKIE_NAME = '_markus_session'
   SESSION_COOKIE_SECRET = '650d281667d8011a3a6ad6dd4b5d4f9ddbce14a7d78b107812dbb40b24e234256ab2c5572c8196cf6cde6b85942688b6bfd337ffa0daee648d04e1674cf1fdf6'
@@ -236,6 +235,12 @@ Markus::Application.configure do
   SESSION_COOKIE_HTTP_ONLY = true
   SESSION_COOKIE_SECURE = false
 
+  #####################################################################
+  # Markus Encoding
+  #####################################################################
+  # minimum confidence before we can be sure about the encoding of a string
+  MIN_CONFIDENCE = 0.9
+  
   ###################################################################
   # END OF MarkUs SPECIFIC CONFIGURATION
   ###################################################################

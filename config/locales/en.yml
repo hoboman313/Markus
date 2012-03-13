@@ -249,6 +249,7 @@ en:
       marking_status:       "Marking Status:"
       notes:                "Notes (<span id=\"number_of_notes\">%{notes}</span>)"
       include_annotations: "Include Annotations:"
+      view_options: "Options"
       marks:
         total_mark: "Total Mark:"
         released:   "Released:"
