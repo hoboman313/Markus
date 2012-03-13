@@ -59,6 +59,8 @@ class SubmissionFile < ActiveRecord::Base
       return "python"
     when ".rb"
       return "ruby"
+    when ".sass"
+      return "sass"
     when ".scala"
       return "scala"
     when ".scm", ".ss"

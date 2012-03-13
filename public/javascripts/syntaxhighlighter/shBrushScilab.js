@@ -16,7 +16,7 @@
 
 		this.regexList = [
 			{ regex: /\/\/.*$/gm,	css: 'comments' },			// one line comments
-			{ regex: dp.sh.RegexLib.DoubleQuotedString,		css: 'string' },			// strings
+			{ regex: SyntaxHighlighter.regexLib.doubleQuotedString,		css: 'string' },			// strings
 			{ regex: new RegExp(this.GetKeywords(macros), 'gm'),		css: 'functions bold' },
 			{ regex: new RegExp(this.GetKeywords(builtin), 'gm'),		css: 'color3' },
 			{ regex: new RegExp(this.GetKeywords(keywords), 'gm'), 		css: 'keyword' },
