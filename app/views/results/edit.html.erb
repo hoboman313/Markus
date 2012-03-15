@@ -58,6 +58,10 @@
 
   var modalNotesGroup = null;
   document.observe("dom:loaded", function(){
+    // on page reload, codeviewer views the very first submission file
+    // this ensures that the dropdown remains consistent in that scenario
+    $$('select#select_file_id option').first().selected = true;
+    
     modalNotesGroup = new Control.Modal($('notes_dialog'),
      {
        overlayOpacity: 0.75,
@@ -119,36 +123,26 @@ function check_working() {
   <p class="notice"><%=t(:marks_released_notice)%></p>
 <% end %>
 
-
-
 <%= render :partial => 'results/common/submission_selector', :locals => {:group => @group, :result => @result, :assignment => @assignment, :previous_grouping => @previous_grouping, :next_grouping => @next_grouping} %>
 
 <%= render :partial => 'results/common/errors' %>
 
-<div id="file_selector">
-  <%= render :partial => 'results/common/file_selector', :locals => {:files => @files, :can_download => true} %>
-  <% if @assignment.enable_test %>
-    <div id="test_results_controls">
-      <%= render :partial => 'results/common/test_selector', :locals => {:test_result_files => @test_result_files, :result => @result} %>
-    </div>
-  <% end %>
-</div>
-
-
+<%= render :partial => 'results/marker/action_bar', :locals => { :files => @files, :can_download => true, :test_result_files => @test_result_files, :result => @result, :assignment => @assignment } %>     
+      
 <% if !@result.released_to_students %>
 
-<%= render :partial => 'results/marker/marker_panes',
-           :locals => {:extra_marks_points => @extra_marks_points,
-                       :extra_marks_percentage => @extra_marks_percentage,
-                       :annotation_categories => @annotation_categories,
-                       :result => @result,
-                       :assignment => @assignment,
-                       :marks_map => @marks_map,
-                       :mark_criteria =>@mark_criteria,
-                       :submission => @submission,
-                       :old_result => @old_result} %>
+  <%= render :partial => 'results/marker/marker_panes',
+             :locals => {:extra_marks_points => @extra_marks_points,
+                         :extra_marks_percentage => @extra_marks_percentage,
+                         :annotation_categories => @annotation_categories,
+                         :result => @result,
+                         :assignment => @assignment,
+                         :marks_map => @marks_map,
+                         :mark_criteria =>@mark_criteria,
+                         :submission => @submission,
+                         :old_result => @old_result,
+                         :files => @files} %>
 <% else %>
-<%= render :partial => 'results/result_summary'%>
-
+  <%= render :partial => 'results/result_summary'%>
 <% end %>
 </div>

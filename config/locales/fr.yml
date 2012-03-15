@@ -248,7 +248,7 @@ fr:
       next_submission:      "Envoi suivant"
       marking_status:       "État de l'évaluation : "
       notes:                "Remarques (<span id=\"number_of_notes\">%{notes}</span>)"
-      include_annotations: "Ajouter les annotations : "
+      include_annotations: "Ajouter les annotations"
       view_options: "Options"
       marks:
         total_mark: "Notes totales : "
@@ -299,6 +299,13 @@ fr:
       cant_display_image: "L'image ne peut pas être affichée. Si vous essayez d'afficher un PDF, ou le fichier est trop grand pour être affiché, ou l'option permettant d'afficher les PDF est désactivée. Vous pouvez télécharger manuellement le fichier."
       test_code: "Code pour les tests"
       criterion_incomplete_error: "Note non remplie, mais état fixé comme terminé"
+      options:
+        encoding: "Encoding"
+        success: "Options updated successfully"
+        encode_fail: "You have provided an invalid or unsupported encoding"
+        update: "Update"
+      error:
+        exception: "Could not render this file in the code viewer.  Click on the Download button to download the file instead."
 
     seperate_multiple_with_commas:  "Séparer les noms d'utilisateur par des virgules."
     csv_valid_format:   "Erreur durant la lecture du fichier CSV que vous venez d'envoyer. Assurez-vous que le fichier soit bien un fichier CSV valide et que chaque ligne finisse par un retour chariot. Aucun changement effectué."

@@ -1,5 +1,8 @@
 <div id="pane_holders">
   <div id="code_pane">
+    <div id="file_selector">
+      <%= render :partial => 'results/common/file_selector', :locals => {:files => @files} %>
+    </div>
     <ul id="code_and_annotations_tabs" class="subsection_tabs">
        <li class="tab"><a href="#code_holder"><%= I18n.t("marker.source_code") %></a></li>
        <li class="tab"><a href="#annotations_summary"><%= I18n.t("marker.annot_summary") %></a></li>
@@ -40,8 +43,6 @@
     </div> <!-- Remark Request -->
     
     <div id="view_options" class="tabbedArea">
-      <h3><%= I18n.t("marker.view_options") %></h3>
-      <%= render :partial => 'results/marker/view_options' %>
     </div> 
 
     <div id="remark_request_tab" class="tabbedArea">

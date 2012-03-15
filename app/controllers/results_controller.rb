@@ -11,14 +11,56 @@ class ResultsController < ApplicationController
                             :add_extra_mark, :next_grouping, :update_overall_comment, :expand_criteria,
                         :collapse_criteria, :remove_extra_mark, :expand_unmarked_criteria, :update_marking_state,
                         :download, :note_message,
-                        :update_overall_remark_comment, :update_remark_request, :cancel_remark_request]
+                        :update_overall_remark_comment, :update_remark_request, :cancel_remark_request, :update_options]
   before_filter      :authorize_for_ta_and_admin, :only => [:edit, :update_mark, :create, :add_extra_mark,
                         :next_grouping, :update_overall_comment, :expand_criteria,
                         :collapse_criteria, :remove_extra_mark, :expand_unmarked_criteria,
-                        :update_marking_state, :note_message, :update_overall_remark_comment]
+                        :update_marking_state, :note_message, :update_overall_remark_comment, :update_options]
   before_filter      :authorize_for_user, :only => [:codeviewer, :download]
   before_filter      :authorize_for_student, :only => [:view_marks, :update_remark_request, :cancel_remark_request]
 
+  def update_options
+    # test out if the encoding will work
+    begin
+      Iconv.new("utf-8", params[:encoding])
+    rescue Exception => e
+      @fail_msg = I18n.t('common.options.encode_fail')
+    end
+
+    # don't do any updates if we got a fail message
+    if @fail_msg.nil?
+      # save the user's encoding preference
+      userPreference = SubmissionFilePreference.find_by_user_id_and_submission_file_id(@current_user.id, params[:submission_file_id])
+      if userPreference.nil?
+        userPreference = SubmissionFilePreference.new
+        userPreference.user_id = @current_user.id
+        userPreference.submission_file_id = params[:submission_file_id]  
+      end
+
+      userPreference.encoding = params[:encoding]
+
+      if userPreference.save
+        @success_msg = I18n.t('common.options.success')
+  
+        # variables required by the codeviewer
+        @submission_file_id = params[:submission_file_id]
+        # annots and all_annots are actual objects and thus cannot be stored and recovered properly
+        # through a webpage... must get them again
+        @file = SubmissionFile.find(@submission_file_id)
+        @annots = @file.annotations
+        @all_annots = @file.submission.annotations
+  
+        @file_contents = params[:file_contents]
+        @encoding = params[:encoding]
+        @code_type = params[:code_type]
+      else
+        @fail_msg = I18n.t('common.options.encode_fail')
+      end
+    end
+
+    render :template => 'results/common/codeviewer'
+  end
+  
   def note_message
     @result = Result.find(params[:id])
     if params[:success]
@@ -173,11 +215,11 @@ class ResultsController < ApplicationController
 
   def download
     #Ensure student doesn't download a file not submitted by his own grouping
-    if !authorized_to_download?(params[:select_file_id])
+    if !authorized_to_download?(params[:selected_file])
       render 'shared/http_status.html', :locals => { :code => "404", :message => HttpStatusHelper::ERROR_CODE["message"]["404"] }, :status => 404, :layout => false
       return
     end
-    file = SubmissionFile.find(params[:select_file_id])
+    file = SubmissionFile.find(params[:selected_file])
     begin
       if params[:include_annotations] == 'true' && !file.is_supported_image?
         file_contents = file.retrieve_file(true)
@@ -221,7 +263,7 @@ class ResultsController < ApplicationController
       if @file.submission.grouping.membership_status(current_user).nil?
         render :partial => 'shared/handle_error',
                :locals => {:error => I18n.t('submission_file.error.no_access',
-                 :submission_file_id => @submission_file_id)}
+               :submission_file_id => @submission_file_id)}
         return
       end
     end
@@ -247,7 +289,8 @@ class ResultsController < ApplicationController
       @file.encoding = @encoding
       @file.save
     else
-      @encoding = @file.encoding 
+      user_preference = SubmissionFilePreference.find_by_user_id_and_submission_file_id(@current_user.id, @submission_file_id)
+      @encoding = user_preference.nil? ? @file.encoding : user_preference.encoding 
     end
 
     render :template => 'results/common/codeviewer'

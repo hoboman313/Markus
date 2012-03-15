@@ -866,7 +866,7 @@ input#extra_mark_description{
   background: #FFFFE0;
   border: 1px solid #E6DB55;
   padding: 3px 30px;
-  margin: 5px 5px 5px 0px;
+  margin: 5px;
 }
 
 .information{
@@ -1869,10 +1869,9 @@ fieldset.disabled{
 
 div#test_results_controls {
   display: inline;
-  margin-left: 30px;
 }
 
-form#grader_view_file_selector_form {
+form#grader_view_file_download_form {
   display: inline;
 }
 

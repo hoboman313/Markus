@@ -162,6 +162,7 @@ Markus::Application.routes.draw do
           get 'update_mark'
           get 'expand_criteria'
           get 'view_marks'
+          post 'update_options'
         end
       end
     end

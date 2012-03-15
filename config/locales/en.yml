@@ -248,7 +248,7 @@ en:
       next_submission:      "Next Submission"
       marking_status:       "Marking Status:"
       notes:                "Notes (<span id=\"number_of_notes\">%{notes}</span>)"
-      include_annotations: "Include Annotations:"
+      include_annotations: "Include Annotations"
       view_options: "Options"
       marks:
         total_mark: "Total Mark:"
@@ -299,6 +299,13 @@ en:
       cant_display_image: "Image cannot be displayed. If you are trying to view a pdf file its probably too big to display or you have turned off pdf support. Click on the Download button to download the file instead"
       test_code: "Test Code"
       criterion_incomplete_error: "Mark unfilled but marking state was set to complete"
+      options:
+        encoding: "Encoding"
+        success: "Options updated successfully"
+        encode_fail: "You have provided an invalid or unsupported encoding"
+        update: "Update"
+      error:
+        exception: "Could not render this file in the code viewer.  Click on the Download button to download the file instead."
 
     seperate_multiple_with_commas:  "Seperate multiple user names with commas"
     csv_valid_format:   "There was a problem parsing the CSV file you uploaded.  Please ensure that it's a valid CSV format, and that each line ends with a carriage-return line-feed set of characters.  No changes were made. "

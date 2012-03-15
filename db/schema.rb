@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120209053921) do
+ActiveRecord::Schema.define(:version => 20120313220117) do
 
   create_table "annotation_categories", :force => true do |t|
     t.text     "annotation_category_name"
@@ -311,6 +311,14 @@ ActiveRecord::Schema.define(:version => 20120209053921) do
     t.integer "child_pid"
     t.boolean "stop_child",               :default => false
     t.boolean "safely_stop_child_exited", :default => false
+  end
+
+  create_table "submission_file_preferences", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "submission_file_id"
+    t.string   "encoding"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "submission_files", :force => true do |t|
