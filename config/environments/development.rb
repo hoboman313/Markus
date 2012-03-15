@@ -240,7 +240,7 @@ Markus::Application.configure do
   #####################################################################
   # minimum confidence before we can be sure about the encoding of a string
   MIN_CONFIDENCE = 0.9
-  
+
   ###################################################################
   # END OF MarkUs SPECIFIC CONFIGURATION
   ###################################################################

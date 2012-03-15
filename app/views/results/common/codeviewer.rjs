@@ -25,7 +25,7 @@ begin
         :code_type => @code_type }
 
       if !@success_msg.nil?
-        page['options_success']['style']['display'] = 'block' 
+        page['options_success']['style']['display'] = 'block'
         page.replace_html 'options_success', @success_msg
 
         # highlight the new message briefly
@@ -52,13 +52,13 @@ begin
       # render view_options with no params = all fields are disabled
       page.replace_html 'view_options',
         :partial => 'results/marker/view_options'
-        
+
       page.replace_html 'codeviewer',
         :partial => 'results/common/text_codeviewer',
         :locals => { :file_contents => I18n.t("submission_file.error.binary_file_message"),
         :annots => @annots, :code_type => @code_type}
     end
-  
+
     # Also update the annotation_summary_list
     if @current_user.ta? || @current_user.admin?
       page.replace_html 'annotation_summary_list',

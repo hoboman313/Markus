@@ -1,18 +1,18 @@
 <div id="action_bar">
-  <%= form_tag({:action => "download"}, { :id => "grader_view_file_download_form"} ) do %>  
+  <%= form_tag({:action => "download"}, { :id => "grader_view_file_download_form"} ) do %>
     <%= hidden_field_tag :selected_file, "" %>
     <%= submit_tag I18n.t(:download) if can_download && !files.empty? %>
     <%= label_tag("include_annotations", I18n.t("marker.include_annotations"), :class => "inline_label") if can_download && !files.empty? %>
     <%= check_box_tag("include_annotations", true, false, :id => "include_annotations", :class => "inline_checkbox") if can_download && !files.empty? %>
   <% end %>
-  
+
   <% if assignment.enable_test %>
     <div id="test_results_controls">
       <span>&nbsp; | &nbsp;</span>
       <%= render :partial => 'results/common/test_selector', :locals => {:test_result_files => test_result_files, :result => result} %>
     </div>
   <% end %>
-  
+
   <span id="loading_code" style="display:none;">
     <%=image_tag('spinner.gif')%> <%= I18n.t("common.loading_code") %>
   </span>

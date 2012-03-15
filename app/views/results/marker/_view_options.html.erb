@@ -4,13 +4,12 @@
 <h2><%= I18n.t("marker.view_options") %></h2>
 
 <%# Only enabled entry fields if we got passed locals.
-  # Local are only passed when we try to view a text-based file 
+  # Local are only passed when we try to view a text-based file
 %>
-<% 
-  # FIXME: code duplication sucks... must be a better way to do this...form_tag is the problem as I don't know how to disable it properly
+<%# FIXME: code duplication sucks... must be a better way to do this...form_tag is the problem as I don't know how to disable it properly
 %>
 <% if defined? submission_file_id %>
-  <%= form_tag ({:action => "update_options", :submission_file_id => submission_file_id, 
+  <%= form_tag ({:action => "update_options", :submission_file_id => submission_file_id,
       :code_type => code_type}, :remote => true) do %>
     <%= hidden_field_tag :file_contents, file_contents %>
     <%= label_tag t("common.options.encoding") %>
@@ -18,9 +17,9 @@
 
     <%= submit_tag t('common.options.update') %>
   <% end %>
-<% else %>   
+<% else %>
     <%= label_tag t("common.options.encoding") %>
     <%= text_field_tag 'encoding', '', :disabled => true %><br />
-        
+
     <%= submit_tag t('common.options.update'), :disabled => true  %>
 <% end %>

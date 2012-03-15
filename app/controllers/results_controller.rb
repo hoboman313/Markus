@@ -34,14 +34,14 @@ class ResultsController < ApplicationController
       if userPreference.nil?
         userPreference = SubmissionFilePreference.new
         userPreference.user_id = @current_user.id
-        userPreference.submission_file_id = params[:submission_file_id]  
+        userPreference.submission_file_id = params[:submission_file_id]
       end
 
       userPreference.encoding = params[:encoding]
 
       if userPreference.save
         @success_msg = I18n.t('common.options.success')
-  
+
         # variables required by the codeviewer
         @submission_file_id = params[:submission_file_id]
         # annots and all_annots are actual objects and thus cannot be stored and recovered properly
@@ -49,7 +49,7 @@ class ResultsController < ApplicationController
         @file = SubmissionFile.find(@submission_file_id)
         @annots = @file.annotations
         @all_annots = @file.submission.annotations
-  
+
         @file_contents = params[:file_contents]
         @encoding = params[:encoding]
         @code_type = params[:code_type]
@@ -60,7 +60,7 @@ class ResultsController < ApplicationController
 
     render :template => 'results/common/codeviewer'
   end
-  
+
   def note_message
     @result = Result.find(params[:id])
     if params[:success]
@@ -290,7 +290,7 @@ class ResultsController < ApplicationController
       @file.save
     else
       user_preference = SubmissionFilePreference.find_by_user_id_and_submission_file_id(@current_user.id, @submission_file_id)
-      @encoding = user_preference.nil? ? @file.encoding : user_preference.encoding 
+      @encoding = user_preference.nil? ? @file.encoding : user_preference.encoding
     end
 
     render :template => 'results/common/codeviewer'
