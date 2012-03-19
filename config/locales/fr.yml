@@ -8,6 +8,7 @@ fr:
     all:                "Tous"
     none:               "Aucun"
     search:             "Recherche :"
+    new:                "New"
 
     # app/views/main/login.html.erb
     welcome_to:         "Bienvenue sur MarkUs !"
@@ -90,7 +91,7 @@ fr:
     iso_date_format_example:    "Format : AAAA-MM-JJ (Exemple : 2009-01-13)"
     iso_due_date_format_example:    "Format : AAAA-MM-JJ HH:MM (Exemple : 2009-01-13 17:44)"
     create_new_assignment:      "Créer un nouveau projet"
-    manage_course_work: "Gestion du cours"
+    manage_assignments: "Manage Assignments"
     repository_folder:  "Dossier du projet"
     marking_state:
       not_collected: "Pas récupéré"
@@ -118,7 +119,6 @@ fr:
         error: "La règle d'envoi n'a pas pu être mise en place : #%{message}"
         not_valid_submission_rule: "%{type} n'est pas une règle d'envoi valide"
         rules:           "Règles du projet"
-        edit:           "Édition du projet :"
         properties:     "Propriétés du projet"
         required_files:  "Fichiers requis"
         submission_rules:  "Règles d'envoi"
@@ -950,7 +950,6 @@ fr:
 
     notes:
         note_on: "%{user_name} sur <b>%{display_for}</b>"
-        add_new: "Nouvelle remarque"
         existing: "Remarques existantes"
         comment: "Votre commentaire"
         save: "Enregistrer la remarque"
@@ -1019,8 +1018,9 @@ fr:
 
     section:
       name: "Nom de la section"
+      sections: "Sections"
       legend: "Section"
-      create_new_section: "Ajouter une nouvelle section"
+      create_new_section: "Create Section"
       update_section: "Édition de la section"
       add_section: "Ajouter une section"
       manage_users: "Gestion des utilisateurs"

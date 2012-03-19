@@ -8,6 +8,7 @@ en:
     all:                "All"
     none:               "None"
     search:             "Search:"
+    new:                "New"
 
     # app/views/main/login.html.erb
     welcome_to:         "Welcome to MarkUs!"
@@ -90,7 +91,7 @@ en:
     iso_date_format_example:    "Format:  YYYY-MM-DD - Example:  2009-01-13"
     iso_due_date_format_example:    "Format:  YYYY-MM-DD HH:MM - Example:  2009-01-13 17:44"
     create_new_assignment:      "Add Assignment"
-    manage_course_work: "Manage Course Work"
+    manage_assignments: "Manage Assignments"
     repository_folder:  "Repository Folder"
     marking_state:
       not_collected: "Not Collected"
@@ -118,7 +119,6 @@ en:
         error: "Could not assign SubmissionRule: #%{message}"
         not_valid_submission_rule: "%{type} is not a valid SubmissionRule"
         rules:           "Assignment Rules"
-        edit:           "Edit Assignment:"
         properties:     "Assignment Properties"
         required_files:  "Required files"
         submission_rules:  "Submission Rules"
@@ -978,7 +978,6 @@ en:
 
     notes:
         note_on: "%{user_name} on <b>%{display_for}</b>"
-        add_new: "New"
         existing: "Existing Notes"
         comment: "Your comment"
         save: "Save Note"
@@ -1047,8 +1046,9 @@ en:
 
     section:
       name: "Name"
+      sections: "Sections"
       legend: "Section"
-      create_new_section: "Add a new section"
+      create_new_section: "Create Section"
       update_section: "Update Section"
       add_section: "Add a new section"
       manage_users: "Manage Users"

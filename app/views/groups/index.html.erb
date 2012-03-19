@@ -136,22 +136,19 @@ document.observe("dom:loaded", function(){
 
 <div id="title_bar">
   <h1><%=h I18n.t("groups.manage_groups") %></h1>
-  <div class="colRightGroups">
-      <div class="headingButtons  ">
-      <%  # Allow cloning groups forward only if its web submits are disallowed
-          # for this assignment.
-          if @assignment.allow_web_submits == false %>
-        <%= button_to_function t("groups.another_assignment_group"),
-          'assignment_group_use(); return false;', :class => "button" %>
-        <span class="menu_bar">|</span>
-      <% end %>
-      <%= button_to_function I18n.t("download"), "download_groups();" %>
+  <div class="headingButtons">
+    <%  # Allow cloning groups forward only if its web submits are disallowed
+        # for this assignment.
+        if @assignment.allow_web_submits == false %>
+      <%= button_to_function t("groups.another_assignment_group"),
+        'assignment_group_use(); return false;', :class => "button" %>
       <span class="menu_bar">|</span>
-      <%= button_to_function I18n.t("upload"), "upload_groups();" %>
-    </div> <!-- rightjustify-->
-  </div> <!-- colrightgroups-->
-
-  </div> <!-- title_bar-->
+    <% end %>
+    <%= button_to_function I18n.t("download"), "download_groups();" %>
+    <span class="menu_bar">|</span>
+    <%= button_to_function I18n.t("upload"), "upload_groups();" %>
+  </div> <!-- headingButtons->
+</div> <!-- title_bar-->
 
 
 <div class="wrapLeft">

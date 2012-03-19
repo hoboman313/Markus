@@ -145,6 +145,7 @@ h4{
    font-family: "Myriad", "Myriad Pro", "Lucida Grande", "Lucida Sans Unicode", Verdana;
    font-size: 24px;
    color: #464646;
+   display: inline-block;
 }
 
 #title_bar input, #title_bar a, .sub_title a{
@@ -359,6 +360,7 @@ span#choose_an_assignment{
    display: inline-block;
    font-weight: bold;
    text-align: center;
+   margin-bottom: 0.5em;
 }
 
 /* Global Action*/
@@ -944,8 +946,9 @@ input#extra_mark_description{
   left: 20px;
   width: 550px;
   height: 500px;
-  overflow: scroll;
+  overflow: auto;
   padding: 10px;
+  border:1px solid #333;
 }
 
 #about_dialog #about_close {
@@ -1104,10 +1107,7 @@ div.float_left {
 }
 
 .headingButtons{
-  position: absolute;
-  right: 0px;
-  padding: 0 1.3em;
-  margin-top: -2em;
+  display: inline;
 }
 
 .globalActionIconsTop, .globalActionIconsBottom{
