@@ -235,7 +235,13 @@ Markus::Application.configure do
   SESSION_COOKIE_EXPIRE_AFTER = 3.weeks
   SESSION_COOKIE_HTTP_ONLY = true
   SESSION_COOKIE_SECURE = false
-
+  
+  #####################################################################
+  # Markus Encoding
+  #####################################################################
+  # minimum confidence before we can be sure about the encoding of a string
+  MIN_CONFIDENCE = 0.9
+  
   ###################################################################
   # END OF MarkUs SPECIFIC CONFIGURATION
   ###################################################################

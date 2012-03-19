@@ -11,7 +11,6 @@
 <% if defined? submission_file_id %>
   <%= form_tag({:action => "update_options", :submission_file_id => submission_file_id,
       :code_type => code_type}, :remote => true) do %>
-    <%= hidden_field_tag :file_contents, file_contents %>
     <%= label_tag t("common.options.encoding") %>
     <%= text_field_tag :encoding, encoding %><br />
 

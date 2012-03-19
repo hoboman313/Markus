@@ -15,14 +15,11 @@ begin
     page['selected_file']['value'] = @submission_file_id
 
     # Non-binary files
-    if !SubmissionFile.is_binary?(@file_contents) and @encoding != "unknown"
-      @file_contents = Iconv.conv("utf-8", @encoding, @file_contents)
-
+    if !SubmissionFile.is_binary?(@file_contents)
       page.replace_html 'view_options',
         :partial => 'results/marker/view_options',
         :locals => { :submission_file_id => @submission_file_id,
-        :file_contents => @file_contents, :encoding => @encoding,
-        :code_type => @code_type }
+        :encoding => @encoding, :code_type => @code_type }
 
       if !@success_msg.nil?
         page['options_success']['style']['display'] = 'block'

@@ -19,12 +19,14 @@ class ResultsController < ApplicationController
   before_filter      :authorize_for_user, :only => [:codeviewer, :download]
   before_filter      :authorize_for_student, :only => [:view_marks, :update_remark_request, :cancel_remark_request]
 
+  # This is ran when the User clicks "Update" button on the Options tab of the Graderview
   def update_options
     # test out if the encoding will work
     begin
-      Iconv.new("utf-8", params[:encoding])
+      # need to retrieve the file again and encode it
+      @file_contents = Iconv.conv("utf-8", params[:encoding], SubmissionFile.find(params[:submission_file_id]).retrieve_file)
     rescue Exception => e
-      @fail_msg = I18n.t('common.options.encode_fail')
+      @fail_msg = I18n.t('common.error.bad_encoding')
     end
 
     # don't do any updates if we got a fail message
@@ -45,16 +47,16 @@ class ResultsController < ApplicationController
         # variables required by the codeviewer
         @submission_file_id = params[:submission_file_id]
         # annots and all_annots are actual objects and thus cannot be stored and recovered properly
-        # through a webpage... must get them again
+        # through a web page... must get them again
         @file = SubmissionFile.find(@submission_file_id)
         @annots = @file.annotations
         @all_annots = @file.submission.annotations
 
-        @file_contents = params[:file_contents]
         @encoding = params[:encoding]
         @code_type = params[:code_type]
       else
-        @fail_msg = I18n.t('common.options.encode_fail')
+        # failed to save user preferences
+        @fail_msg = I18n.t('common.error.bad_encoding')
       end
     end
 
@@ -280,19 +282,27 @@ class ResultsController < ApplicationController
     end
     @code_type = @file.get_file_type
 
+    # encoding should only be nil if no one has ever tried to view the file via graderview
     if @file.encoding.nil?
       cd = CharDet.detect(@file_contents)
       @encoding = cd["encoding"]
+      
+      # unable to get an encoding, so mark it as unknown
       if @encoding.nil?
         @encoding = "unknown"
       end
       @file.encoding = @encoding
       @file.save
     else
+      # the user's preference override the file specific encoding
       user_preference = SubmissionFilePreference.find_by_user_id_and_submission_file_id(@current_user.id, @submission_file_id)
       @encoding = user_preference.nil? ? @file.encoding : user_preference.encoding
     end
-
+    
+    if @encoding != "unknown"
+      @file_contents = Iconv.conv("utf-8", @encoding, @file_contents)
+    end
+    
     render :template => 'results/common/codeviewer'
   end
 

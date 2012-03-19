@@ -302,9 +302,9 @@ fr:
       options:
         encoding: "Encoding"
         success: "Options updated successfully"
-        encode_fail: "You have provided an invalid or unsupported encoding"
         update: "Update"
       error:
+        bad_encoding: "The file may not be viewed with the specified encoding."
         exception: "Could not render this file in the code viewer.  Click on the Download button to download the file instead."
 
     seperate_multiple_with_commas:  "Séparer les noms d'utilisateur par des virgules."
@@ -1028,6 +1028,7 @@ fr:
 
     section:
       name: "Nom de la section"
+      sections: "Sections"
       legend: "Section"
       create_new_section: "Ajouter une nouvelle section"
       update_section: "Édition de la section"

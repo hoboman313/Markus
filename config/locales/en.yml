@@ -8,6 +8,7 @@ en:
     all:                "All"
     none:               "None"
     search:             "Search:"
+    new:                "New"
 
     # app/views/main/login.html.erb
     welcome_to:         "Welcome to MarkUs!"
@@ -210,7 +211,7 @@ en:
     no_result:          "No marks are available for this assignment."
     no_remark_result:   "Remark results are not yet available for this assignment."
     unmarked:           "unmarked"
-    partial:           "partial"
+    partial:            "partial"
     complete:           "complete"
     released:           "released"
     preview:            "Preview"
@@ -302,9 +303,9 @@ en:
       options:
         encoding: "Encoding"
         success: "Options updated successfully"
-        encode_fail: "You have provided an invalid or unsupported encoding"
         update: "Update"
       error:
+        bad_encoding: "The file may not be viewed with the specified encoding."
         exception: "Could not render this file in the code viewer.  Click on the Download button to download the file instead."
 
     seperate_multiple_with_commas:  "Seperate multiple user names with commas"
@@ -986,7 +987,6 @@ en:
 
     notes:
         note_on: "%{user_name} on <b>%{display_for}</b>"
-        add_new: "New"
         existing: "Existing Notes"
         comment: "Your comment"
         save: "Save Note"
@@ -1055,6 +1055,7 @@ en:
 
     section:
       name: "Name"
+      sections: "Sections"
       legend: "Section"
       create_new_section: "Add a new section"
       update_section: "Update Section"
