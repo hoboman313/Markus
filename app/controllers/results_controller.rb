@@ -286,7 +286,7 @@ class ResultsController < ApplicationController
     if @file.encoding.nil?
       cd = CharDet.detect(@file_contents)
       @encoding = cd["encoding"]
-      
+
       # unable to get an encoding, so mark it as unknown
       if @encoding.nil?
         @encoding = "unknown"
@@ -298,11 +298,11 @@ class ResultsController < ApplicationController
       user_preference = SubmissionFilePreference.find_by_user_id_and_submission_file_id(@current_user.id, @submission_file_id)
       @encoding = user_preference.nil? ? @file.encoding : user_preference.encoding
     end
-    
+
     if @encoding != "unknown"
       @file_contents = Iconv.conv("utf-8", @encoding, @file_contents)
     end
-    
+
     render :template => 'results/common/codeviewer'
   end
 
