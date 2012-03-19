@@ -1028,7 +1028,6 @@ fr:
 
     section:
       name: "Nom de la section"
-      sections: "Sections"
       legend: "Section"
       create_new_section: "Ajouter une nouvelle section"
       update_section: "Édition de la section"

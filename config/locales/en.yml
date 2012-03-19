@@ -8,7 +8,6 @@ en:
     all:                "All"
     none:               "None"
     search:             "Search:"
-    new:                "New"
 
     # app/views/main/login.html.erb
     welcome_to:         "Welcome to MarkUs!"
@@ -987,6 +986,7 @@ en:
 
     notes:
         note_on: "%{user_name} on <b>%{display_for}</b>"
+        add_new: "New"
         existing: "Existing Notes"
         comment: "Your comment"
         save: "Save Note"
@@ -1055,7 +1055,6 @@ en:
 
     section:
       name: "Name"
-      sections: "Sections"
       legend: "Section"
       create_new_section: "Add a new section"
       update_section: "Update Section"

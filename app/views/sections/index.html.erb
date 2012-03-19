@@ -1,7 +1,4 @@
-<div id="title_bar"><h1>
-  <%= I18n.t("section.sections") %>
-  <%= link_to I18n.t('new'), new_section_path %>
-</h1></div>
+<div id="title_bar"><h1><%= I18n.t("section.manage_users") %></h1></div>
 
 <div class="wrapLeft">
 
@@ -16,7 +13,7 @@
   </div>
 <% end %>
 
-
+<%= link_to I18n.t('section.add_section'), new_section_path %>
 <% if @sections.empty? %>
   <p><%= I18n.t('section.no_sections') %></p>
 <% else %>
