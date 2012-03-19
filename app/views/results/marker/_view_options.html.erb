@@ -9,7 +9,7 @@
 <%# FIXME: code duplication sucks... must be a better way to do this...form_tag is the problem as I don't know how to disable it properly
 %>
 <% if defined? submission_file_id %>
-  <%= form_tag ({:action => "update_options", :submission_file_id => submission_file_id,
+  <%= form_tag({:action => "update_options", :submission_file_id => submission_file_id,
       :code_type => code_type}, :remote => true) do %>
     <%= hidden_field_tag :file_contents, file_contents %>
     <%= label_tag t("common.options.encoding") %>
