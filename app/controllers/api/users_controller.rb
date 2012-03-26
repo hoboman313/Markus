@@ -124,21 +124,21 @@ module Api
     end
 
     private
-    
+
     # Get the plain text representation for users
     def get_plain_text_for_users(users)
       data=""
-      
+
       users.each do |user| 
         data += t('user.user_name') + ": " + user.user_name + "\n" +
                               t('user.user_type') + ": " + user.type + "\n" +
                               t('user.first_name') + ": " + user.first_name + "\n" +
                               t('user.last_name') + ": " + user.last_name + "\n\n" 
       end
-      
+
       return data
     end
-    
+
     # Process the parameters passed during a POST/PUT request
     def process_attributes(params, attributes)
         # allow the user to provide the section name instead of an id which is meaningless
