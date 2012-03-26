@@ -7,14 +7,14 @@
   <title><%= @file_name %></title>
   <%= stylesheet_link_tag 'main.css', :media => 'all' %>
   <%= stylesheet_link_tag("SyntaxHighlighter") %>
-  
+
   <%= javascript_include_tag 'application.js' %>
   <%= javascript_include_tag 'prototype.js' %>
   <%= javascript_include_tag 'rails.js' %>
   <%= javascript_include_tag 'menu.js' %>
-  
-  <% 
-    # SYNTAX HIGHLIGHTER 
+
+  <%
+    # SYNTAX HIGHLIGHTER
   %>
   <%= javascript_include_tag "syntaxhighlighter/shCore.js",
     "syntaxhighlighter/shBrushJava.js",
