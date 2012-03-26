@@ -872,7 +872,7 @@ class ResultsControllerTest < AuthenticatedControllerTest
           end
 
           should "without file error" do
-            @file.expects(:get_file_type).once.returns('txt')
+            SubmissionFile.expects(:get_file_type).with(@file.filename).once.returns('txt')
             SubmissionFile.any_instance.expects(:retrieve_file).once.returns('file content')
             get_as @admin,
                     :codeviewer,

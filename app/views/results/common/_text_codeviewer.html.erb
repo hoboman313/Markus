@@ -1,7 +1,7 @@
 <div id="standby_highlighting" >
   Standby - Highlighting...
 </div>
-<pre id="code" name="code" class="<%=h(@code_type)%>" cols="80" rows="50">
+<pre id="code" name="code" class="<%=h(code_type)%>" cols="80" rows="50">
 <% # The "h" before the filetext allows us to escape HTML/Javascript strings %>
 <%=h file_contents %>
 </pre>
@@ -15,9 +15,13 @@
     if ($('annotation_menu') != null){
       $('annotation_menu').show();
     }
-    source_code_ready();
 
+    // note that annots are not defined when a student tries to view a submitted
+    // file through the file_browser
+    // download action of the submission_controller renders this partial
     <% if (defined? annots) %>
+        source_code_ready();
+
         <% annots.each do |annot| %>
             add_annotation_text(<%=annot.annotation_text.id%>,
             '<%=simple_format(h(escape_javascript(annot.annotation_text.content.to_s)))%>');

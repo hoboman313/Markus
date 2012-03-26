@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title><%= @file_name %></title>
+  <%= stylesheet_link_tag 'main.css', :media => 'all' %>
+  <%= stylesheet_link_tag("SyntaxHighlighter") %>
+  
+  <%= javascript_include_tag 'application.js' %>
+  <%= javascript_include_tag 'prototype.js' %>
+  <%= javascript_include_tag 'rails.js' %>
+  <%= javascript_include_tag 'menu.js' %>
+  
+  <% 
+    # SYNTAX HIGHLIGHTER 
+  %>
+  <%= javascript_include_tag "syntaxhighlighter/shCore.js",
+    "syntaxhighlighter/shBrushJava.js",
+    "syntaxhighlighter/shBrushXml.js",
+    "syntaxhighlighter/shBrushRuby.js",
+    "syntaxhighlighter/shBrushPython.js",
+    "syntaxhighlighter/shBrushJScript.js",
+    "syntaxhighlighter/shBrushCpp.js",
+    "syntaxhighlighter/shBrushScheme.js",
+    "syntaxhighlighter/shBrushScilab.js",
+    "syntaxhighlighter/shBrushUnknown.js" %>
+
+    <%= yield :head %>
+</head>
+
+<body>
+<div id="container">
+  <div id="content">
+    <%= render :partial => 'layouts/noscript'%>
+    <%= content_for?(:content) ? yield(:content) : yield %>
+  </div> <!-- content -->
+</div> <!-- container -->
+
+</body>
+</html>

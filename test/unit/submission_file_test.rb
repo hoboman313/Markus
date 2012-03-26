@@ -78,13 +78,14 @@ require 'shoulda'
 
   context "A .java Submission file" do
     setup do
-      @submissionfile = SubmissionFile.new(:filename   => "filename.java",
+      @filename = "filename.java"
+      @submissionfile = SubmissionFile.new(:filename   => @filename,
                                            :path       => "path")
       @submissionfile.submission_id = 1
     end
 
     should "return java" do
-      assert_equal('java', @submissionfile.get_file_type)
+      assert_equal('java', SubmissionFile.get_file_type(@filename))
     end
     should "return java comment" do
       assert_equal(['/*', '*/'], @submissionfile.get_comment_syntax)
@@ -93,13 +94,14 @@ require 'shoulda'
 
   context "A .rb Submission file" do
     setup do
-      @submissionfile = SubmissionFile.new(:filename   => "filename.rb",
+      @filename = "filename.rb"
+      @submissionfile = SubmissionFile.new(:filename   => @filename,
                                            :path       => "path")
       @submissionfile.submission_id = 1
     end
 
     should "return ruby" do
-      assert_equal('ruby', @submissionfile.get_file_type)
+      assert_equal('ruby', SubmissionFile.get_file_type(@filename))
     end
     should "return ruby comment" do
       assert_equal(["=begin\n", "\n=end"], @submissionfile.get_comment_syntax)
@@ -108,13 +110,14 @@ require 'shoulda'
 
   context "A .py Submission file" do
     setup do
-      @submissionfile = SubmissionFile.new(:filename   => "filename.py",
+      @filename = "filename.py"
+      @submissionfile = SubmissionFile.new(:filename   => @filename,
                                            :path       => "path")
       @submissionfile.submission_id = 1
     end
 
     should "return python" do
-      assert_equal('python', @submissionfile.get_file_type)
+      assert_equal('python', SubmissionFile.get_file_type(@filename))
     end
     should "return python comment" do
       assert_equal(['"""', '"""'], @submissionfile.get_comment_syntax)
@@ -123,13 +126,14 @@ require 'shoulda'
 
   context "A .js Submission file" do
     setup do
-      @submissionfile = SubmissionFile.new(:filename   => "filename.js",
+      @filename = "filename.js"
+      @submissionfile = SubmissionFile.new(:filename   => @filename,
                                            :path       => "path")
       @submissionfile.submission_id = 1
     end
 
     should "return javascript" do
-      assert_equal('javascript', @submissionfile.get_file_type)
+      assert_equal('javascript', SubmissionFile.get_file_type(@filename))
     end
     should "return javascript comment" do
       assert_equal(['/*', '*/'], @submissionfile.get_comment_syntax)
@@ -138,13 +142,14 @@ require 'shoulda'
 
   context "A .c Submission file" do
     setup do
-      @submissionfile = SubmissionFile.new(:filename   => "filename.c",
+      @filename = "filename.c"
+      @submissionfile = SubmissionFile.new(:filename   => @filename,
                                            :path       => "path")
       @submissionfile.submission_id = 1
     end
 
     should "return c" do
-      assert_equal('c', @submissionfile.get_file_type)
+      assert_equal('c', SubmissionFile.get_file_type(@filename))
     end
     should "return c comment" do
       assert_equal(['/*', '*/'], @submissionfile.get_comment_syntax)
@@ -153,13 +158,14 @@ require 'shoulda'
 
   context "A no extension Submission file" do
     setup do
-      @submissionfile = SubmissionFile.new(:filename   => "filename",
+      @filename = "filename"
+      @submissionfile = SubmissionFile.new(:filename   => @filename,
                                            :path       => "path")
       @submissionfile.submission_id = 1
     end
 
     should "return a unknown file extension" do
-      assert_equal('unknown', @submissionfile.get_file_type)
+      assert_equal('unknown', SubmissionFile.get_file_type(@filename))
     end
     should "return generic comment" do
       assert_equal(['##', '##'], @submissionfile.get_comment_syntax)
@@ -168,13 +174,14 @@ require 'shoulda'
 
   context "An unknown Submission file" do
     setup do
-      @submissionfile = SubmissionFile.new(:filename   => "filename.toto",
+      @filename = "filename.toto"
+      @submissionfile = SubmissionFile.new(:filename   => @filename,
                                            :path       => "path")
       @submissionfile.submission_id = 1
     end
 
     should "return a unknown file extension" do
-      assert_equal('unknown', @submissionfile.get_file_type)
+      assert_equal('unknown', SubmissionFile.get_file_type(@filename))
     end
     should "return generic comment" do
       assert_equal(['##', '##'], @submissionfile.get_comment_syntax)

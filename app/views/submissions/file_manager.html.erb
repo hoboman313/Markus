@@ -71,9 +71,16 @@
 
 <% if flash[:commit_notice] %>
   <div class="warning">
-    <%=flash[:commit_notice]%>
+    <%= flash[:commit_notice] %>
   </div>
 <% end %>
+
+<% if flash[:encode_notice] %>
+  <div class="warning">
+    <%= flash[:encode_notice] %>
+  </div>
+<% end %>
+
 <% if !@file_manager_errors.nil? && @file_manager_errors[:commit_error] %>
   <div class="warning">
     <%=@file_manager_errors[:commit_error] %>

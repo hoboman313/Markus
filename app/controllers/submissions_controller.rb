@@ -372,7 +372,7 @@ class SubmissionsController < ApplicationController
           cd = CharDet.detect(file_object.read)
           if ( cd["encoding"] != "ascii" and cd["encoding"] != "utf-8" ) or cd["confidence"] < MIN_CONFIDENCE
             @bad_encoding_files = @bad_encoding_files.nil? ? file_object.original_filename : @bad_encoding_files + ", " + file_object.original_filename
-            flash[:commit_notice] = I18n.t("student.submission.bad_encoding", :files => @bad_encoding_files )
+            flash[:encode_notice] = I18n.t("student.submission.bad_encoding", :files => @bad_encoding_files )
           end
           file_object.rewind
 
@@ -394,7 +394,7 @@ class SubmissionsController < ApplicationController
           cd = CharDet.detect(file_object.read)
           if ( cd["encoding"] != "ascii" and cd["encoding"] != "utf-8" ) or cd["confidence"] < MIN_CONFIDENCE
             @bad_encoding_files = @bad_encoding_files.nil? ? file_object.original_filename : @bad_encoding_files + ", " + file_object.original_filename
-            flash[:commit_notice] = I18n.t("student.submission.bad_encoding", :files => @bad_encoding_files )
+            flash[:encode_notice] = I18n.t("student.submission.bad_encoding", :files => @bad_encoding_files )
           end
           file_object.rewind
 
@@ -443,8 +443,8 @@ class SubmissionsController < ApplicationController
 
   def download
     @assignment = Assignment.find(params[:id])
+    @file_name = params[:file_name]
     # find_appropriate_grouping can be found in SubmissionsHelper
-
     @grouping = find_appropriate_grouping(@assignment.id, params)
 
     revision_number = params[:revision_number]
@@ -458,18 +458,21 @@ class SubmissionsController < ApplicationController
 
       begin
        file = @revision.files_at_path(File.join(@assignment.repository_folder, path))[params[:file_name]]
-       file_contents = repo.download_as_string(file)
+       @file_contents = repo.download_as_string(file)
       rescue Exception => e
         render :text => I18n.t("student.submission.missing_file", :file_name => params[:file_name], :message => e.message)
         return
       end
 
-      if SubmissionFile.is_binary?(file_contents)
+      if params[:to_codeviewer] and !SubmissionFile.is_binary?(@file_contents)
+        @code_type = SubmissionFile.get_file_type(params[:file_name])
+        render :student_codeviewer, :layout => 'codeviewer'
+      elsif SubmissionFile.is_binary?(@file_contents)
         # If the file appears to be binary, send it as a download
-        send_data file_contents, :disposition => 'attachment', :filename => params[:file_name]
+        send_data @file_contents, :disposition => 'attachment', :filename => params[:file_name]
       else
         # Otherwise, blast it out to the screen
-        render :text => file_contents, :layout => 'sanitized_html'
+        render :text => @file_contents, :layout => 'sanitized_html'
       end
     end
   end

@@ -280,7 +280,7 @@ class ResultsController < ApplicationController
              :locals => {:error => e.message}
       return
     end
-    @code_type = @file.get_file_type
+    @code_type = SubmissionFile.get_file_type(@file.filename)
 
     # encoding should only be nil if no one has ever tried to view the file via graderview
     if @file.encoding.nil?
