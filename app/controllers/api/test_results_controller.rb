@@ -51,7 +51,8 @@ module Api
           return
         else
           # Some other error occurred
-          render 'shared/http_status', :locals => { :code => "500", :message => HttpStatusHelper::ERROR_CODE["message"]["500"] }, :status => 500
+          render 'shared/http_status', :locals => { :code => "500", :message => HttpStatusHelper::ERROR_CODE["message"]["500"] + 
+          ": " + new_test_result.errors.full_messages.join(", ") }, :status => 500
           return
         end
       end

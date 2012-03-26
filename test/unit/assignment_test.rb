@@ -27,15 +27,12 @@ class AssignmentTest < ActiveSupport::TestCase
   should have_one  :assignment_stat
 
   should validate_presence_of :repository_folder
-  should validate_presence_of :group_min
 
   should validate_numericality_of :group_min
   should validate_numericality_of :group_max
   should validate_numericality_of :tokens_per_day
 
   should validate_presence_of :submission_rule
-
-  should validate_presence_of :marking_scheme_type
 
   # since allow_web_submits is a boolean, should validate_presence_of does
   # not work: see the Rails API documentation for should validate_presence_of

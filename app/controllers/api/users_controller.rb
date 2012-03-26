@@ -1,10 +1,10 @@
 module Api
 
   #=== Description
-  # Allows for adding, modifying and showing users into MarkUs.
+  # Allows for adding, modifying and showing users for MarkUs.
   # Uses Rails' RESTful routes (check 'rake routes' for the configured routes)
   class UsersController < MainApiController
-    # Requires user_name, user_type, last_name, first_name, [section_name], [grace_credits]
+    # Accepts: user_name, user_type, last_name, first_name, [section_name], [grace_credits]
     def create
       if has_missing_params?(params)
         # incomplete/invalid HTTP params
@@ -19,7 +19,7 @@ module Api
         return
       end
 
-      # No user found so create new one
+      # No user found so create a new one
       param_user_type = params[:user_type].downcase
       if param_user_type == "student"
         user_type = Student
@@ -38,28 +38,23 @@ module Api
       new_user = user_type.new(attributes)
       if !new_user.save
         # Some error occurred
-        render 'shared/http_status', :locals => { :code => "500", :message => HttpStatusHelper::ERROR_CODE["message"]["500"] }, :status => 500
+        render 'shared/http_status', :locals => { :code => "500", :message => HttpStatusHelper::ERROR_CODE["message"]["500"] + 
+          ": " + new_user.errors.full_messages.join(", ") }, :status => 500
         return
       end
 
-      # Otherwise everything went alright.
+      # Otherwise everything went well
       render 'shared/http_status', :locals => { :code => "200", :message => HttpStatusHelper::ERROR_CODE["message"]["200"] }, :status => 200
     end
 
-    # Requires nothing, does nothing
+    # Accepts: nothing
     def destroy
       # Admins should not be deleting users at all so pretend this URL does not exist
       render 'shared/http_status', :locals => { :code => "404", :message => HttpStatusHelper::ERROR_CODE["message"]["404"] }, :status => 404
     end
 
-    # Requires  [first_name], [last_name], [user_name], [section_name], [grace_credits]
+    # Accepts: [first_name], [last_name], [user_name], [section_name], [grace_credits]
     def update
-      if params[:id].blank?
-        # incomplete/invalid HTTP params
-        render 'shared/http_status', :locals => { :code => "422", :message => HttpStatusHelper::ERROR_CODE["message"]["422"] }, :status => 422
-        return
-      end
-
       # If no user is found, render an error.
       user = User.find_by_user_name(params[:id])
       if user.nil?
@@ -71,7 +66,7 @@ module Api
       if !params[:user_name].blank?
         # Make sure new user_name does not exist
         if !User.find_by_user_name(params[:user_name]).nil?
-          render 'shared/http_status', :locals => { :code => "409", :message => "User already exists" }, :status => 409
+          render 'shared/http_status', :locals => { :code => "409", :message => "A user already exists with the specified user_name" }, :status => 409
           return
         end
         updated_user_name = params[:user_name]
@@ -83,16 +78,17 @@ module Api
       user.attributes = attributes
       if !user.save
         # Some error occurred
-        render 'shared/http_status', :locals => { :code => "500", :message => HttpStatusHelper::ERROR_CODE["message"]["500"] }, :status => 500
+        render 'shared/http_status', :locals => { :code => "500", :message => HttpStatusHelper::ERROR_CODE["message"]["500"] + 
+          ": " + user.errors.full_messages.join(", ") }, :status => 500
         return
       end
 
-      # Otherwise everything went alright.
+      # Otherwise everything went well
       render 'shared/http_status', :locals => { :code => "200", :message => HttpStatusHelper::ERROR_CODE["message"]["200"] }, :status => 200
       return
     end
 
-    # Requires nothing
+    # Accepts: nothing
     def index
       users = User.all
 
@@ -103,7 +99,7 @@ module Api
       end
     end
 
-    # Requires id ( user name )
+    # Accepts: id ( user name )
     def show
       if params[:id].blank?
         # incomplete/invalid HTTP params
@@ -143,7 +139,7 @@ module Api
       return data
     end
     
-    # Process the parameters passed
+    # Process the parameters passed during a POST/PUT request
     def process_attributes(params, attributes)
         # allow the user to provide the section name instead of an id which is meaningless
         # thus we have to retrieve the id here
