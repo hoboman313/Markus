@@ -202,9 +202,9 @@ module Api
       # assignment
       if create
         attributes["allow_web_submits"] = params[:allow_web_submits].nil? ? 1 : params[:allow_web_submits]
-        attributes["display_grader_names_to_students"] = params[:display_grader_names_to_students].nil? ? 1 : params[:display_grader_names_to_students]
-        attributes["enable_test"] = params[:enable_test].nil? ? 1 : params[:enable_test]
-        attributes["assign_graders_to_criteria"] = params[:assign_graders_to_criteria].nil? ? 1 : params[:assign_graders_to_criteria]
+        attributes["display_grader_names_to_students"] = params[:display_grader_names_to_students].nil? ? 0 : params[:display_grader_names_to_students]
+        attributes["enable_test"] = params[:enable_test].nil? ? 0 : params[:enable_test]
+        attributes["assign_graders_to_criteria"] = params[:assign_graders_to_criteria].nil? ? 0 : params[:assign_graders_to_criteria]
         attributes["repository_folder"] = params[:repository_folder].nil? ? attributes[:short_identifier] : params[:repository_folder]
       else
         attributes["allow_web_submits"] = params[:allow_web_submits] if !params[:allow_web_submits].nil?
