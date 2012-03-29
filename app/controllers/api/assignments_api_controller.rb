@@ -99,7 +99,7 @@ module Api
       end
 
       assignment.attributes = attributes
-      
+
       # Only update the existing submission_rule if the new one exists, is valid
       # and the assignment will save correctly with the current attributes
       # This is to avoid deleting the submission_rule/periods for an existing

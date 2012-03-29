@@ -106,7 +106,7 @@ class Api::AssignmentsApiControllerTest < ActionController::TestCase
         assert_response 404
       end
     end
-        
+
     # Testing POST
     context "testing the create function with valid but minimal attributes" do
       setup do
@@ -130,8 +130,8 @@ class Api::AssignmentsApiControllerTest < ActionController::TestCase
       setup do
         # Create paramters for request
         @attr = { :short_identifier => "ApiTestAssignment", :due_date => "2012-03-26 18:04:39",
-          :repository_folder => "TestFolder", :group_min => 2, :group_max => 3, 
-          :tokens_per_day => 13, :submission_rule_type => "PenaltyDecayPeriod", 
+          :repository_folder => "TestFolder", :group_min => 2, :group_max => 3,
+          :tokens_per_day => 13, :submission_rule_type => "PenaltyDecayPeriod",
           :marking_scheme_type => "flexible", :allow_web_submits => false,
           :display_grader_names_to_students => true, :enable_test => true,
           :assign_graders_to_criteria => true, :description => "Test Description",
@@ -225,7 +225,7 @@ class Api::AssignmentsApiControllerTest < ActionController::TestCase
         assert_equal(@updated_assignment.short_identifier, @new_attr[:short_identifier])
       end
     end
-    
+
     context "testing the update function with a new submission_rule_type" do
       setup do
         @assignment = Assignment.make
@@ -233,7 +233,7 @@ class Api::AssignmentsApiControllerTest < ActionController::TestCase
           :submission_rule_interval => 11, :submission_rule_deduction => 12}
 
         put "update", :id => @assignment.short_identifier,
-            :submission_rule_type => @new_attr[:submission_rule_type], 
+            :submission_rule_type => @new_attr[:submission_rule_type],
             :submission_rule_hours => @new_attr[:submission_rule_hours],
             :submission_rule_interval => @new_attr[:submission_rule_interval],
             :submission_rule_deduction => @new_attr[:submission_rule_deduction]
@@ -251,7 +251,7 @@ class Api::AssignmentsApiControllerTest < ActionController::TestCase
 
     context "testing the update function with a short_identifier that does not exist" do
       setup do
-        put "update", :id => "garbage", 
+        put "update", :id => "garbage",
           :due_date => "garbage"
       end
 

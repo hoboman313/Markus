@@ -159,7 +159,7 @@ class Api::UsersControllerTest < ActionController::TestCase
         @attr = {:user_name => "ApiTestUser", :last_name => "Tester",
                  :first_name => "Api", :user_type =>"admin" }
         # fire off request
-        post "create", @attr 
+        post "create", @attr
       end
 
       should "create the new user specified" do
