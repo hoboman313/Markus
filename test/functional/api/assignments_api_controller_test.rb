@@ -1,0 +1,289 @@
+require File.join(File.dirname(__FILE__), '..', '..', 'test_helper')
+require File.join(File.dirname(__FILE__), '..', '..', 'blueprints', 'blueprints')
+require File.join(File.dirname(__FILE__), '..', '..', 'blueprints', 'helper')
+require 'shoulda'
+require 'base64'
+
+class Api::AssignmentsApiControllerTest < ActionController::TestCase
+
+  # Testing Unauthenticated requests
+  context "An unauthenticated request to api/assignments" do
+    setup do
+      # Set garbage HTTP header
+      @request.env['HTTP_AUTHORIZATION'] = "garbage http_header"
+      @request.env['HTTP_ACCEPT'] = 'text/plain'
+    end
+
+    context "/index" do
+      setup do
+        get "index"
+      end
+
+      should "fail to authenticate the GET request" do
+        assert_response 403
+      end
+    end
+
+    context "/show" do
+      setup do
+        get "show", :id => "garbage"
+      end
+
+      should "fail to authenticate the GET request" do
+        assert_response 403
+      end
+    end
+
+    context "/create" do
+      setup do
+        @res_create = post("create")
+      end
+
+      should "fail to authenticate the GET request" do
+        assert_response 403
+      end
+    end
+
+    context "/update" do
+      setup do
+        put 'update', :id => "garbage"
+      end
+
+      should "fail to authenticate the GET request" do
+        assert_response 403
+      end
+    end
+
+    context "/destroy" do
+      setup do
+        delete "destroy", :id => "garbage"
+      end
+
+      should "fail to authenticate the GET request" do
+        assert_response 403
+      end
+    end
+  end
+
+  # Testing authenticated requests
+  context "An authenticated request to api/assignments" do
+    setup do
+      # Fixtures have manipulated the DB, clear them off.
+      clear_fixtures
+
+      # Creates admin from blueprints.
+      @admin = Admin.make
+      @admin.reset_api_key
+      base_encoded_md5 = @admin.api_key.strip
+      auth_http_header = "MarkUsAuth #{base_encoded_md5}"
+      @request.env['HTTP_AUTHORIZATION'] = auth_http_header
+      @request.env['HTTP_ACCEPT'] = 'text/plain'
+    end
+
+    # Testing GET
+    should "testing the show function with an assignment that exists" do
+      # Create dummy assignment to display
+      @assignment = Assignment.make
+      # fire off request, after setup has been called again, reseting API key.
+      get "show", :id => @assignment.short_identifier
+      assert_response :success
+      assert @response.body.include?(@assignment.short_identifier)
+      assert @response.body.include?(@assignment.due_date.to_s)
+      assert @response.body.include?(@assignment.marking_scheme_type)
+      assert @response.body.include?(@assignment.allow_web_submits.to_s)
+      assert @response.body.include?(@assignment.display_grader_names_to_students.to_s)
+      assert @response.body.include?(@assignment.enable_test.to_s)
+      assert @response.body.include?(@assignment.assign_graders_to_criteria.to_s)
+      assert @response.body.include?(@assignment.submission_rule.type)
+    end
+
+    context "testing the show function with an assignment that does not exist" do
+      setup do
+        get "show", :id => "garbage fake assignment"
+      end
+
+      should "fail to find the assignment, 'garbage fake name'" do
+        assert_response 404
+      end
+    end
+        
+    # Testing POST
+    context "testing the create function with valid but minimal attributes" do
+      setup do
+        # Create paramters for request
+        @attr = { :short_identifier => "ApiTestAssignment", :due_date => "2012-03-26 18:04:39" }
+        # fire off request
+        post "create", @attr
+      end
+
+      should "create the new assignment specified" do
+        assert_response :success
+        @new_assignment = Assignment.find_by_short_identifier(@attr[:short_identifier])
+        assert !@new_assignment.nil?
+        assert_equal(@new_assignment.short_identifier, @attr[:short_identifier])
+        assert_equal(@new_assignment.due_date, Time.zone.parse(@attr[:due_date]))
+        assert_equal(@new_assignment.repository_folder, @attr[:short_identifier])
+      end
+    end
+
+    context "testing the create function with all attributes" do
+      setup do
+        # Create paramters for request
+        @attr = { :short_identifier => "ApiTestAssignment", :due_date => "2012-03-26 18:04:39",
+          :repository_folder => "TestFolder", :group_min => 2, :group_max => 3, 
+          :tokens_per_day => 13, :submission_rule_type => "PenaltyDecayPeriod", 
+          :marking_scheme_type => "flexible", :allow_web_submits => false,
+          :display_grader_names_to_students => true, :enable_test => true,
+          :assign_graders_to_criteria => true, :description => "Test Description",
+          :message => "Test Message", :allow_remarks => false, :remark_due_date => "2012-03-26 18:04:39",
+          :remark_message => "Test Remark Message", :student_form_groups => true,
+          :group_name_autogenerated => false, :submission_rule_deduction => 10,
+          :submission_rule_hours => 11, :submission_rule_interval => 12}
+        # fire off request
+        post "create", @attr
+      end
+
+      should "create the new assignment specified" do
+        assert_response :success
+        @new_assignment = Assignment.find_by_short_identifier(@attr[:short_identifier])
+        assert !@new_assignment.nil?
+        assert_equal(@new_assignment.short_identifier, @attr[:short_identifier])
+        assert_equal(@new_assignment.due_date, Time.zone.parse(@attr[:due_date]))
+        assert_equal(@new_assignment.repository_folder, @attr[:repository_folder])
+        assert_equal(@new_assignment.group_min, @attr[:group_min])
+        assert_equal(@new_assignment.group_max, @attr[:group_max])
+        assert_equal(@new_assignment.tokens_per_day, @attr[:tokens_per_day])
+        assert_equal(@new_assignment.submission_rule.type, PenaltyDecayPeriodSubmissionRule.to_s)
+        assert_equal(@new_assignment.marking_scheme_type, @attr[:marking_scheme_type])
+        assert_equal(@new_assignment.allow_web_submits, @attr[:allow_web_submits])
+        assert_equal(@new_assignment.display_grader_names_to_students, @attr[:display_grader_names_to_students])
+        assert_equal(@new_assignment.enable_test, @attr[:enable_test])
+        assert_equal(@new_assignment.assign_graders_to_criteria, @attr[:assign_graders_to_criteria])
+        assert_equal(@new_assignment.description, @attr[:description])
+        assert_equal(@new_assignment.message, @attr[:message])
+        assert_equal(@new_assignment.allow_remarks, @attr[:allow_remarks])
+        assert_equal(@new_assignment.remark_message, @attr[:remark_message])
+        assert_equal(@new_assignment.student_form_groups, @attr[:student_form_groups])
+        assert_equal(@new_assignment.remark_due_date, Time.zone.parse(@attr[:remark_due_date]))
+        assert_equal(@new_assignment.group_name_autogenerated, @attr[:group_name_autogenerated])
+        assert_equal(@new_assignment.submission_rule.periods.first.deduction, @attr[:submission_rule_deduction])
+        assert_equal(@new_assignment.submission_rule.periods.first.hours, @attr[:submission_rule_hours])
+        assert_equal(@new_assignment.submission_rule.periods.first.interval, @attr[:submission_rule_interval])
+      end
+    end
+
+    context "testing the create function with an existing short_identifier to cause error" do
+      setup do
+        @assignment = Assignment.make
+        @attr = {:short_identifier => @assignment.short_identifier, :due_date => "2012-03-26 18:04:39"}
+        @res = post("create", @attr)
+      end
+
+      should "find an existing assignment and cause conflict" do
+        assert !Assignment.find_by_short_identifier(@attr[:short_identifier]).nil?
+        assert_response :conflict
+      end
+    end
+
+    context "testing the create function with due_date set to garbage" do
+      setup do
+        @attr = {:short_identifier => "ApiTestAssignment", :due_date => "garbage"}
+        @res = post("create", @attr)
+      end
+
+      should "not be saved properly" do
+        assert_response 500
+      end
+    end
+
+    context "testing the create function with submission_rule_type set to garbage" do
+      setup do
+        @attr = {:short_identifier => "ApiTestAssignment", :due_date => "2012-03-26 18:04:39",
+          :submission_rule_type => "garbage"}
+        @res = post("create", @attr)
+      end
+
+      should "give a 422 response" do
+        assert_response 422
+      end
+    end
+
+    # Testing PUT
+    context "testing the update function with a new due_date and short_identifier" do
+      setup do
+         @assignment = Assignment.make
+        @new_attr = {:short_identifier => "ApiTestAssignment", :due_date => "2012-03-26 18:04:39"}
+
+        put "update", :id => @assignment.short_identifier,
+            :due_date => @new_attr[:due_date], :short_identifier => @new_attr[:short_identifier]
+      end
+
+      should "update the short_idenfier and due_date" do
+        @updated_assignment = Assignment.find_by_short_identifier(@new_attr[:short_identifier])
+        assert !@updated_assignment.nil?
+        assert_equal(@updated_assignment.due_date, Time.zone.parse(@new_attr[:due_date]))
+        assert_equal(@updated_assignment.short_identifier, @new_attr[:short_identifier])
+      end
+    end
+    
+    context "testing the update function with a new submission_rule_type" do
+      setup do
+        @assignment = Assignment.make
+        @new_attr = {:submission_rule_type => "PenaltyDecayPeriod", :submission_rule_hours => 10,
+          :submission_rule_interval => 11, :submission_rule_deduction => 12}
+
+        put "update", :id => @assignment.short_identifier,
+            :submission_rule_type => @new_attr[:submission_rule_type], 
+            :submission_rule_hours => @new_attr[:submission_rule_hours],
+            :submission_rule_interval => @new_attr[:submission_rule_interval],
+            :submission_rule_deduction => @new_attr[:submission_rule_deduction]
+      end
+
+      should "update the short_idenfier and due_date" do
+        @updated_assignment = Assignment.find_by_short_identifier(@assignment.short_identifier)
+        assert !@updated_assignment.nil?
+        assert_equal(@updated_assignment.submission_rule.type, PenaltyDecayPeriodSubmissionRule.to_s)
+        assert_equal(@updated_assignment.submission_rule.periods.first.hours, @new_attr[:submission_rule_hours])
+        assert_equal(@updated_assignment.submission_rule.periods.first.interval, @new_attr[:submission_rule_interval])
+        assert_equal(@updated_assignment.submission_rule.periods.first.deduction, @new_attr[:submission_rule_deduction])
+      end
+    end
+
+    context "testing the update function with a short_identifier that does not exist" do
+      setup do
+        put "update", :id => "garbage", 
+          :due_date => "garbage"
+      end
+
+      should "not be able to find the short_identifier to update" do
+        assert Assignment.find_by_short_identifier("garbage").nil?
+        assert_response 404
+      end
+    end
+
+    context "testing the update function with a short_identifier that already exists" do
+      setup do
+        @assignment_to_update = Assignment.make
+        @existing_assignment = Assignment.make
+        # fire off request
+        put "update", :id => @assignment_to_update.short_identifier,
+                      :short_identifier => @existing_assignment.short_identifier,
+                      :due_date => "2012-03-26 18:04:39"
+      end
+
+      should "find the new short_identifier as existing and cause conflict" do
+        assert_response 409
+      end
+    end
+
+    context "testing the destory function is disabled" do
+      setup do
+        delete "destroy", :id => "garbage"
+      end
+
+      should "pretend the function doesn't exist" do
+        assert_response :missing
+      end
+    end
+  end
+end

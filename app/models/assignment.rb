@@ -42,7 +42,7 @@ class Assignment < ActiveRecord::Base
   validates_associated :assignment_files
 
   validates_presence_of :repository_folder
-  validates_presence_of :short_identifier
+  validates_presence_of :short_identifier, :group_min
   validates_uniqueness_of :short_identifier, :case_sensitive => true
 
   validates_numericality_of :group_min,
@@ -56,6 +56,8 @@ class Assignment < ActiveRecord::Base
   validates_associated :submission_rule
   validates_associated :assignment_stat
   validates_presence_of :submission_rule
+
+  validates_presence_of :marking_scheme_type
 
   # since allow_web_submits is a boolean, validates_presence_of does not work:
   # see the Rails API documentation for validates_presence_of (Model

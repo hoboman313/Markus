@@ -17,18 +17,18 @@ module Api
       if has_missing_params?(params)
         # incomplete/invalid HTTP params
         render 'shared/http_status', :locals => { :code => "422", :message => HttpStatusHelper::ERROR_CODE["message"]["422"] }, :status => 422
-      return
+        return
       end
 
       # check if there is an existing assignment
       assignment = Assignment.find_by_short_identifier(params[:short_identifier])
       if !assignment.nil?
         render 'shared/http_status', :locals => { :code => "409", :message => "Assignment already exists" }, :status => 409
-      return
+        return
       end
 
       # no assignment found so create a new one
-      attributes={:short_identifier => params[:short_identifier]}
+      attributes = {:short_identifier => params[:short_identifier]}
       attributes = process_attributes(params, attributes, true)
 
       new_assignment = Assignment.new(attributes)
@@ -45,7 +45,7 @@ module Api
         # some error occurred
         render 'shared/http_status', :locals => { :code => "500", :message => HttpStatusHelper::ERROR_CODE["message"]["500"] +
           ": " + new_assignment.errors.full_messages.join(", ")}, :status => 500
-      return
+        return
       end
 
       # otherwise everything went well
@@ -81,37 +81,43 @@ module Api
         # Make sure new short_identifier does not exist
         if !Assignment.find_by_short_identifier(params[:short_identifier]).nil?
           render 'shared/http_status', :locals => { :code => "409", :message => "An assignment already exists with the specified short_identifier" }, :status => 409
-        return
+          return
         end
         updated_short_identifier = params[:short_identifier]
       end
 
-      attributes={:short_identifier => updated_short_identifier}
+      attributes = {:short_identifier => updated_short_identifier}
       attributes = process_attributes(params, attributes, false)
 
-      @submission_rule = get_submission_rule(params)
-      # stop if we encountered an error while getting the submission_rule
-      if !@submission_rule
-        return
+      # only update the submission_rule if we have to
+      if !params[:submission_rule_type].nil?
+        @submission_rule = get_submission_rule(params)
+        # stop if we encountered an error while getting the submission_rule
+        if !@submission_rule
+          return
+        end
       end
 
-      assignment.transaction do
-        # make sure to delete all the old submission rule first
+      assignment.attributes = attributes
+      
+      # Only update the existing submission_rule if the new one exists, is valid
+      # and the assignment will save correctly with the current attributes
+      # This is to avoid deleting the submission_rule/periods for an existing
+      # assignment and then failing to create new ones
+      if assignment.valid? and !@submission_rule.nil? and @submission_rule.valid?
         assignment.submission_rule.destroy
-
         assignment.submission_rule = @submission_rule
-        assignment.attributes = attributes
-        if !assignment .save
-          # Some error occurred
-          render 'shared/http_status', :locals => { :code => "500", :message => HttpStatusHelper::ERROR_CODE["message"]["500"] +
-            ": " + assignment.errors.full_messages.join(", ") }, :status => 500
+      end
+
+      if !assignment.save
+        # Some error occurred
+        render 'shared/http_status', :locals => { :code => "500", :message => HttpStatusHelper::ERROR_CODE["message"]["500"] +
+          ": " + assignment.errors.full_messages.join(", ") }, :status => 500
         return
-        end
       end
 
       # Otherwise everything went well
       render 'shared/http_status', :locals => { :code => "200", :message => HttpStatusHelper::ERROR_CODE["message"]["200"] }, :status => 200
-      return
     end
 
     # Accepts: nothing
@@ -132,7 +138,7 @@ module Api
       if params[:id].blank?
         # incomplete/invalid HTTP params
         render 'shared/http_status', :locals => { :code => "422", :message => "Missing short identifier name" }, :status => 422
-      return
+        return
       end
 
       # check if there's a valid assignment
@@ -140,7 +146,7 @@ module Api
       if assignment.nil?
         # no such assignment
         render 'shared/http_status', :locals => { :code => "404", :message => "Assignment was not found" }, :status => 404
-      return
+        return
       end
 
       # Everything went fine, send the response according to the user's format
@@ -157,7 +163,9 @@ module Api
 
     private
 
+    # get a submission_rule for an assignment based on params
     def get_submission_rule(params)
+      # defaults to noLateSubmissionRule
       if params[:submission_rule_type].nil? or params[:submission_rule_type] == "NoLate"
         @submission_rule = NoLateSubmissionRule.new
 
@@ -185,10 +193,8 @@ module Api
     # Process the parameters passed during a POST/PUT request
     def process_attributes(params, attributes, create)
       attributes["due_date"] = params[:due_date] if !params[:due_date].nil?
-      attributes["group_min"] = params[:group_min] if !params[:group_min].nil?
       attributes["group_max"] = params[:group_max] if !params[:group_max].nil?
       attributes["tokens_per_day"] = params[:tokens_per_day] if !params[:tokens_per_day].nil?
-      attributes["marking_scheme_type"] = params[:marking_scheme_type] if !params[:marking_scheme_type].nil?
       attributes["description"] = params[:description] if !params[:description].nil?
       attributes["message"] = params[:message] if !params[:message].nil?
       attributes["allow_remarks"] = params[:allow_remarks] if !params[:allow_remarks].nil?
@@ -201,17 +207,22 @@ module Api
       # have default values that are usually preset in the UI. They do need to be set when editing an existing
       # assignment
       if create
+        # these defaults should probably be consistent with the ones found in db/schema
         attributes["allow_web_submits"] = params[:allow_web_submits].nil? ? 1 : params[:allow_web_submits]
         attributes["display_grader_names_to_students"] = params[:display_grader_names_to_students].nil? ? 0 : params[:display_grader_names_to_students]
         attributes["enable_test"] = params[:enable_test].nil? ? 0 : params[:enable_test]
         attributes["assign_graders_to_criteria"] = params[:assign_graders_to_criteria].nil? ? 0 : params[:assign_graders_to_criteria]
         attributes["repository_folder"] = params[:repository_folder].nil? ? attributes[:short_identifier] : params[:repository_folder]
+        attributes["group_min"] = params[:group_min].nil? ? 1 : params[:group_min]
+        attributes["marking_scheme_type"] = params[:marking_scheme_type].nil? ? "rubric" : params[:marking_scheme_type]
       else
         attributes["allow_web_submits"] = params[:allow_web_submits] if !params[:allow_web_submits].nil?
         attributes["display_grader_names_to_students"] =  params[:display_grader_names_to_students] if !params[:display_grader_names_to_students].nil?
         attributes["enable_test"] = params[:enable_test] if !params[:enable_test].nil?
         attributes["assign_graders_to_criteria"] = params[:assign_graders_to_criteria] if !params[:assign_graders_to_criteria].nil?
         attributes["repository_folder"] = params[:repository_folder] if !params[:repository_folder].nil?
+        attributes["group_min"] = params[:group_min] if !params[:group_min].nil?
+        attributes["marking_scheme_type"] = params[:marking_scheme_type] if !params[:marking_scheme_type].nil?
       end
 
       return attributes

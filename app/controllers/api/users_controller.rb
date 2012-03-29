@@ -85,7 +85,6 @@ module Api
 
       # Otherwise everything went well
       render 'shared/http_status', :locals => { :code => "200", :message => HttpStatusHelper::ERROR_CODE["message"]["200"] }, :status => 200
-      return
     end
 
     # Accepts: nothing
