@@ -1,11 +1,4 @@
 GIT
-  remote: git://github.com/hoboman313/assert_valid_markup.git
-  revision: af6a0bcc9109ef566d1539337037e9f4be2b5460
-  specs:
-    assert_valid_markup (0.6.6)
-      json
-
-GIT
   remote: git://github.com/rails/prototype_legacy_helper.git
   revision: a2cd95c3e3c1a4f7a9566efdab5ce59c886cb05f
   specs:
@@ -46,7 +39,6 @@ GEM
     cgi_multipart_eof_fix (2.5.0)
     columnize (0.3.4)
     daemons (1.1.4)
-    db_populate (0.2.6)
     dynamic_form (1.1.4)
     erubis (2.6.6)
       abstract (>= 1.0.0)
@@ -57,7 +49,6 @@ GEM
     fastthread (1.0.7)
     gem_plugin (0.2.3)
     i18n (0.5.0)
-    json (1.6.5)
     linecache (0.46)
       rbx-require-relative (> 0.0.4)
     machinist (1.0.6)
@@ -103,6 +94,7 @@ GEM
     rbx-require-relative (0.0.5)
     rcov (0.9.10)
     rdoc (3.9.2)
+    rghost (0.8.7.6)
     routing-filter (0.2.4)
       actionpack
     ruby-debug (0.10.4)
@@ -128,8 +120,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  assert_valid_markup!
-  db_populate
   dynamic_form
   exception_notification
   faker
@@ -145,6 +135,7 @@ DEPENDENCIES
   rails
   rcov
   rdoc
+  rghost
   routing-filter
   ruby-debug
   rubyzip

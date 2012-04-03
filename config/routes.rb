@@ -7,10 +7,10 @@ Markus::Application.routes.draw do
   # Install the default routes as the lowest priority.
   root :controller => "main", :action => "login"
    # API routes
-  namespace :api do
-    resources :test_results
-    resources :submission_downloads
-    resources :users
+  namespace :api, :defaults => { :format => 'text' } do
+    resources :test_results, :except => [:new, :edit]
+    resources :submission_downloads, :except => [:new, :edit]
+    resources :users, :except => [:new, :edit]
     resources :main_api
   end
 
@@ -39,10 +39,12 @@ Markus::Application.routes.draw do
       get 'deletegroup'
       get 'decline_invitation'
       post 'disinvite_member'
+      get 'render_test_result'
     end
 
     resources :rubrics do
       member do
+        delete 'destroy'
         get 'move_criterion'
       end
 
@@ -77,6 +79,12 @@ Markus::Application.routes.draw do
     end
 
     resources :groups do
+
+      member do
+        post 'rename_group'
+        get 'rename_group_dialog'
+      end
+
       collection do
         post 'populate'
         post 'populate_students'
@@ -90,8 +98,8 @@ Markus::Application.routes.draw do
         get 'valid_grouping'
         get 'invalid_grouping'
         get 'global_actions'
-        get 'remove_group'
         get 'rename_group'
+        delete 'remove_group'
         post 'add_group'
         post 'global_actions'
       end
@@ -122,7 +130,7 @@ Markus::Application.routes.draw do
 
       member do
         get 'collect_and_begin_grading'
-        get 'manually_collect_and_begin_grading'
+        post 'manually_collect_and_begin_grading'
         get 'repo_browser'
       end
 
@@ -130,26 +138,30 @@ Markus::Application.routes.draw do
         collection do
           get 'update_mark'
           get 'expand_criteria'
+          get 'collapse_criteria'
+          get 'expand_unmarked_criteria'
+          get 'edit'
+          get 'download'
         end
 
         member do
           get 'add_extra_marks'
           get 'add_extra_mark'
           get 'download'
+          post 'download'
           get 'cancel_remark_request'
           get 'codeviewer'
           post 'codeviewer'
-          get 'collapse_criteria'
-          get 'add_extra_mark'
+          post 'collapse_criteria'
+          post 'add_extra_mark'
           get 'next_grouping'
-          get 'remove_extra_mark'
-          get 'expand_unmarked_criteria'
+          post 'remove_extra_mark'
+          post 'expand_unmarked_criteria'
           get 'set_released_to_students'
-          get 'update_overall_comment'
-          get 'update_overall_remark_comment'
-          get 'update_marking_state'
+          post 'update_overall_comment'
+          post 'update_overall_remark_comment'
+          post 'update_marking_state'
           get 'update_remark_request'
-          get 'render_test_result'
           get 'update_positions'
           get 'update_mark'
           get 'expand_criteria'
@@ -173,7 +185,7 @@ Markus::Application.routes.draw do
         post 'populate_graders'
         post 'populate'
         post 'populate_criteria'
-        get 'set_assign_criteria'
+        post 'set_assign_criteria'
         get 'random_assign'
         get 'upload_dialog'
         get 'unassign'
@@ -223,9 +235,10 @@ Markus::Application.routes.draw do
   end
 
   resources :notes do
+
     collection do
+      post 'add_note'
       post 'noteable_object_selector'
-      get 'add_note'
       get 'new_update_groupings'
       post 'new_update_groupings'
     end
@@ -242,15 +255,18 @@ Markus::Application.routes.draw do
   resources :annotations do
     collection do
       post 'add_existing_annotation'
-      post 'update_annotation'
+      put 'update_annotation'
       post 'update_comment'
+      delete 'destroy'
     end
   end
 
   resources :students do
     collection do
+      post 'bulk_modify'
       post 'populate'
       get 'manage'
+      get 'add_new_section'
       get 'download_student_list'
       post 'upload_student_list'
     end
