@@ -39,7 +39,6 @@ GEM
     cgi_multipart_eof_fix (2.5.0)
     columnize (0.3.4)
     daemons (1.1.4)
-    db_populate (0.2.6)
     dynamic_form (1.1.4)
     erubis (2.6.6)
       abstract (>= 1.0.0)
@@ -95,6 +94,7 @@ GEM
     rbx-require-relative (0.0.5)
     rcov (0.9.10)
     rdoc (3.9.2)
+    rghost (0.8.7.6)
     routing-filter (0.2.4)
       actionpack
     ruby-debug (0.10.4)
@@ -120,7 +120,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  db_populate
   dynamic_form
   exception_notification
   faker
@@ -136,6 +135,7 @@ DEPENDENCIES
   rails
   rcov
   rdoc
+  rghost
   routing-filter
   ruby-debug
   rubyzip

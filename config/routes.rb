@@ -148,8 +148,12 @@ Markus::Application.routes.draw do
 
       resources :results do
         collection do
-          post 'update_mark'
-          post 'expand_criteria'
+          get 'update_mark'
+          get 'expand_criteria'
+          get 'collapse_criteria'
+          get 'expand_unmarked_criteria'
+          get 'edit'
+          get 'download'
         end
 
         member do
@@ -263,8 +267,9 @@ Markus::Application.routes.draw do
   resources :annotations do
     collection do
       post 'add_existing_annotation'
-      post 'update_annotation'
+      put 'update_annotation'
       post 'update_comment'
+      delete 'destroy'
     end
   end
 
@@ -273,6 +278,7 @@ Markus::Application.routes.draw do
       post 'bulk_modify'
       post 'populate'
       get 'manage'
+      get 'add_new_section'
       get 'download_student_list'
       post 'upload_student_list'
     end
