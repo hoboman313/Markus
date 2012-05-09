@@ -10,7 +10,7 @@ Markus::Application.routes.draw do
   namespace :api, :defaults => { :format => 'text' } do
 
     resources :assignments, :controller => "assignments_api", :except => [:new, :edit] do
-      resources :groups, :controller => "groupss_api", :except => [:new, :edit] do
+      resources :groups, :controller => "groups_api", :except => [:new, :edit] do
         resources :test_results, :except => [:new, :edit, :show] do
           collection do
             delete :destroy
